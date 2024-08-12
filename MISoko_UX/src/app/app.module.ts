@@ -19,6 +19,7 @@ import { MatCardModule } from '@angular/material/card';
 import { HeaderComponent } from './components/header/header.component';
 
 import { ProfileDirective } from './directives/profile.directive';
+import { TandcsComponent } from './components/tandcs/tandcs.component';
 
 
 
@@ -28,6 +29,7 @@ import { ProfileDirective } from './directives/profile.directive';
     AppComponent,
     HeaderComponent,
     ProfileDirective,
+    TandcsComponent
     
 
   ],

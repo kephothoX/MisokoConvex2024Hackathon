@@ -3,9 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './authn/auth.guard'
 
+import { TandcsComponent } from './components/tandcs/tandcs.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/pNAccessories', pathMatch: 'full' },
+
+  { path: 'tands', title: 'Terms & Component', component: TandcsComponent },
   
   { path: 'eNAppliances', loadChildren: () => import('./eNAppliances/eNAppliances.module').then(m => m.ENAppliancesModule )},
 

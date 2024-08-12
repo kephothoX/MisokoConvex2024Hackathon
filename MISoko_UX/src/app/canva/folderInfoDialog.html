@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Folder Metadata</h2>
+<mat-dialog-content class="mat-typography">
+    <mat-card>
+        <mat-list class="list-group" *ngIf="Folder">
+            <div mat-subheader><mat-icon matListItemIcon>folder</mat-icon></div>
+            <mat-list-item class="list-group-item d-flex flex-row">                
+                <div matListItemTitle>{{Folder.name }}</div>
+                <div matListItemLine>{{ Folder.id }}</div>
+                <div matListItemLine>{{Folder.created_at | date}}</div>
+            </mat-list-item>
+        </mat-list>
+        <mat-card-actions *ngIf="Folder">
+            <button mat-raised-button color="accent" (click)="folderItemsDialog(Folder)" matTooltip="Rename Canva Folder">
+                <mat-icon class="material-symbols.outlined">folder_data</mat-icon>
+                Folder Items
+            </button>
+            <mat-divider></mat-divider>
+
+            <button mat-edit-button color="accent" (click)="editFolderDialog(Folder)" matTooltip="Rename Canva Folder">
+                <mat-icon class="material-symbols.outlined">edit</mat-icon>
+                Edit Folder
+            </button>
+            <mat-divider></mat-divider>
+
+            <button mat-raised-button color="warn" (click)="deleteFolder(Folder)" matTooltip="Delete Canva Folder">
+                <mat-icon class="material-symbols.outlined">delete</mat-icon>
+                Delete Folder
+            </button>
+            <mat-divider></mat-divider>
+        </mat-card-actions>
+    </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" class="text-white" [mat-dialog-close]="true" cdkFocusInitial>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+        Close
+    </button>
+</mat-dialog-actions>

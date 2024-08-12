@@ -1,0 +1,52 @@
+<section class="container-fluid">
+  <mat-card class="mat-elevation-z8 card p-2 m-1" *ngIf="AutoMobile" #autoMobile>
+    <div class="d-flex flex-column">
+      <div id="ADImagesCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+          <div class="carousel-item active" *ngFor="let entry of AutoMobile.ad_images">
+            <img src="{{  entry }}" alt="MISoko" class="object-fit-fill rounded mx-auto d-block img-fluid" />
+          </div>
+
+        </div>
+        <button mat-icon-button class="carousel-control-prev text-accent" color="warn" data-bs-target="#ADImagesCarousel" data-bs-slide="prev">
+          <mat-icon class="material-symbols-outlined">arrow_back_ios</mat-icon>
+        </button>
+        <button mat-icon-button class="carousel-control-next text-accent" color="warn" data-bs-target="#ADImagesCarousel" data-bs-slide="next">
+          <mat-icon class="material-symbols-outlined">arrow_forward_ios</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <h2 class="card-title">{{ AutoMobile.make }}</h2>
+      <p class="card-text">{{ AutoMobile.description }}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><h3 class="fs-3 text-accent">{{ AutoMobile.price_amount | currency }}</h3></li>
+      <li class="list-group-item"><h5 class="fs-5 text-black">{{ AutoMobile.location }}</h5></li>
+    </ul>
+    <div class="card-body">
+
+      <a href="phone:{{ AutoMobile.ad_phone_number}}" class="card-link">
+        <button mat-raised-button color="primary">
+          <mat-icon class="material-symbols-outlined">dial</mat-icon>
+          {{ AutoMobile.ad_phone_number }}
+        </button>
+      </a>
+
+      <a href="mailto:{{ AutoMobile.ad_email }}" class="card-link">
+        <button mat-raised-button color="primary">
+          <mat-icon class="material-symbols-outlined">mail</mat-icon>
+          {{ AutoMobile.ad_email }}
+        </button>
+      </a>
+    </div>
+  </mat-card>
+
+  <mat-card *ngIf="!AutoMobile">
+    <mat-progress-bar mode="buffer" color="primary"></mat-progress-bar>
+    <h2>Loading Electrical and Appliance.....</h2>
+  </mat-card>
+
+</section>

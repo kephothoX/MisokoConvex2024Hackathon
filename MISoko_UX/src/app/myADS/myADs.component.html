@@ -1,0 +1,227 @@
+<section class="container-fluid">
+    <mat-card class="mat-elevation-z8">
+        <mat-tab-group fitInkBarToContent>
+            <mat-tab label="ElectricalsNAppliances">
+                <ng-template mat-tab-label>
+                    <span class="m-2 p-2">
+                        <mat-icon color="accent" class="material-symbols-outlined pr-2">category</mat-icon>
+                        Electricals And Appliances
+                    </span>
+                </ng-template>
+                <mat-divider></mat-divider>
+
+                <mat-card>
+                    <mat-card-content>
+                        <mat-list class="list-group" *ngIf="ENAppliances">
+                            <div mat-subheader class="fs-2 text-accent">Electricals And Appliances</div>
+                            <mat-list-item class="list-group-item d-flex" *ngFor="let item of ENAppliances">
+                                <button matListItemIcon mat-icon-button color="accent" class="text-white">
+                                    <a routerLink="/myADs/ENAppliances/update/{{ item._id }}">
+                                        <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                    </a>
+                                </button>
+                                
+                                <div matListItemTitle>{{ item.name }}</div>
+            
+                                <div matListItemLine>
+                                    {{item.description }}
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
+
+            <mat-tab label="PhobnesNAccessories">
+                <ng-template mat-tab-label>
+                    <span class="m-2 p-2">
+                        <mat-icon color="accent" class="material-symbols-outlined pr-2">category</mat-icon>
+                        Phones And Accessories
+                    </span>
+                </ng-template>
+                <mat-divider></mat-divider>
+
+                <mat-card>
+                    <mat-card-content>
+                        <mat-list class="list-group" *ngIf="PNAccessories">
+                            <div mat-subheader class="fs-2 text-accent">Phones And Accessories</div>
+                            <mat-list-item class="list-group-item d-flex" *ngFor="let item of PNAccessories">
+                                <button matListItemIcon mat-icon-button color="accent" class="text-white">
+                                    <a routerLink="/myADs/PNAccessories/update/{{ item._id }}">
+                                        <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                    </a>
+                                </button>
+                                
+                                <div matListItemTitle>{{ item.name }}</div>
+            
+                                <div matListItemLine>
+                                    {{item.description }}
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
+
+            <mat-tab label="ServiceNIndustry">
+                <ng-template mat-tab-label>
+                    <span class="m-2 p-2">
+                        <mat-icon color="accent" class="material-symbols-outlined pr-2">category</mat-icon>
+                        Service And Industry 
+                    </span>
+                </ng-template>
+                <mat-divider></mat-divider>
+
+                <mat-card>
+                    <mat-card-content>
+                        <mat-list class="list-group" *ngIf="SNIndustries">
+                            <div mat-subheader class="fs-2 text-accent">Service And Industries </div>
+                            <mat-list-item class="list-group-item d-flex" *ngFor="let item of SNIndustries">
+                                <button matListItemIcon mat-icon-button color="accent" class="text-white">
+                                    <a routerLink="/myADs/SNIndustries/update/{{ item._id }}">
+                                        <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                    </a>
+                                </button>
+                                
+                                <div matListItemTitle>{{ item.name }}</div>
+            
+                                <div matListItemLine>
+                                    {{item.description }}
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
+
+            <mat-tab label="AutoMobiles">
+                <ng-template mat-tab-label>
+                    <span class="m-2 p-2">
+                        <mat-icon color="accent" class="material-symbols-outlined pr-2">category</mat-icon>
+                        AutoMobiles
+                    </span>
+                </ng-template>
+                <mat-divider></mat-divider>
+
+                <mat-card>
+                    <mat-card-content>
+                        <mat-list class="list-group" *ngIf="AutoMobiles">
+                            <div mat-subheader class="fs-2 text-accent">AutoMobiles</div>
+                            <mat-list-item class="list-group-item d-flex" *ngFor="let item of AutoMobiles">
+                                <button matListItemIcon mat-icon-button color="accent" class="text-white">
+                                    <a routerLink="/myADs/AutoMobiles/update/{{ item._id }}">
+                                        <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                    </a>
+                                </button>
+                                
+                                <div matListItemTitle>{{ item.make }}</div>
+            
+                                <div matListItemLine>
+                                    {{item.description }}
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
+
+            <mat-tab label="ElectricalsNAppliances">
+                <ng-template mat-tab-label>
+                    <span class="m-2 p-2">
+                        <mat-icon color="accent" class="material-symbols-outlined pr-2">category</mat-icon>
+                        Electricals And Appliances
+                    </span>
+                </ng-template>
+                <mat-divider></mat-divider>
+
+                <mat-card>
+                    <mat-card-content>
+                        <mat-list class="list-group" *ngIf="ENAppliances">
+                            <div mat-subheader class="fs-2 text-accent">Electricals And Appliances</div>
+                            <mat-list-item class="list-group-item d-flex" *ngFor="let item of ENAppliances">
+                                <button matListItemIcon mat-icon-button color="accent" class="text-white">
+                                    <a routerLink="/myADs/ENAppliances/update/{{ item._id }}">
+                                        <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                    </a>
+                                </button>
+                                
+                                <div matListItemTitle>{{ item.name }}</div>
+            
+                                <div matListItemLine>
+                                    {{item.description }}
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
+
+            <mat-tab label="ElectricalsNAppliances">
+                <ng-template mat-tab-label>
+                    <span class="m-2 p-2">
+                        <mat-icon color="accent" class="material-symbols-outlined pr-2">category</mat-icon>
+                        Electricals And Appliances
+                    </span>
+                </ng-template>
+                <mat-divider></mat-divider>
+
+                <mat-card>
+                    <mat-card-content>
+                        <mat-list class="list-group" *ngIf="ENAppliances">
+                            <div mat-subheader class="fs-2 text-accent">Electricals And Appliances</div>
+                            <mat-list-item class="list-group-item d-flex" *ngFor="let item of ENAppliances">
+                                <button matListItemIcon mat-icon-button color="accent" class="text-white">
+                                    <a routerLink="/myADs/ENAppliances/update/{{ item._id }}">
+                                        <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                    </a>
+                                </button>
+                                
+                                <div matListItemTitle>{{ item.name }}</div>
+            
+                                <div matListItemLine>
+                                    {{item.description }}
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
+
+            <mat-tab label="ElectricalsNAppliances">
+                <ng-template mat-tab-label>
+                    <span class="m-2 p-2">
+                        <mat-icon color="accent" class="material-symbols-outlined pr-2">category</mat-icon>
+                        Electricals And Appliances
+                    </span>
+                </ng-template>
+                <mat-divider></mat-divider>
+
+                <mat-card>
+                    <mat-card-content>
+                        <mat-list class="list-group" *ngIf="ENAppliances">
+                            <div mat-subheader class="fs-2 text-accent">Electricals And Appliances</div>
+                            <mat-list-item class="list-group-item d-flex" *ngFor="let item of ENAppliances">
+                                <button matListItemIcon mat-icon-button color="accent" class="text-white">
+                                    <a routerLink="/myADs/ENAppliances/update/{{ item._id }}">
+                                        <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                    </a>
+                                </button>
+                                
+                                <div matListItemTitle>{{ item.name }}</div>
+            
+                                <div matListItemLine>
+                                    {{item.description }}
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
+            <mat-tab label="Second">Content 2</mat-tab>
+            <mat-tab label="Third">Content 3</mat-tab>
+            <mat-tab label="Fourth" disabled>Content 4</mat-tab>
+        </mat-tab-group>
+    </mat-card>
+</section>
+
+

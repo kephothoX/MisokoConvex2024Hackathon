@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "target": "https://disciplined-sandpiper-967.convex.site",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

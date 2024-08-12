@@ -1,0 +1,33 @@
+{
+  "name": "MISoko-api",
+  "version": "1.0.0",
+  "description": "MISoko Convex API",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/kephotho"
+  },
+  "keywords": [
+    "Kephotho"
+  ],
+  "author": "Kephotho Solutions",
+  "license": "MIT",
+  "dependencies": {
+    "@auth/core": "^0.34.2",
+    "@convex-dev/auth": "^0.0.47",
+    "@google/generative-ai": "^0.15.0",
+    "axios": "^1.7.2",
+    "busboy": "^1.6.0",
+    "convex": "^1.13.2",
+    "dotenv": "^16.4.5",
+    "hono": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/busboy": "^1.5.4",
+    "@types/node": "^20.14.11",
+    "typescript": "5.5.3"
+  }
+}

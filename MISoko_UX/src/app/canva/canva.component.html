@@ -1,0 +1,158 @@
+<section>
+    <mat-card>
+        <mat-card-content>
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" class="nav-tabs">
+                <mat-tab label="Folders">
+                    <ng-template mat-tab-label>
+                        <span class="m-2 p-2">
+                            <mat-icon color="accent" class="material-symbols-outlined pr-2">folders</mat-icon>
+                            Folders
+                        </span>
+                    </ng-template>
+                    <mat-divider></mat-divider>
+
+                    <mat-card>
+                        <mat-list class="list-group" *ngIf="Folders">
+                            <div mat-subheader>Folders</div>
+                            <mat-list-item class="list-group-item d-flex" *ngFor="let folder of Folders">
+                                <button  matListItemIcon mat-icon-button color="warn" (click)="folderInfoDialog(folder)"
+                                        matTooltip="Folder Details">
+                                        <mat-icon class="material-symbols-outlined">folder</mat-icon>
+                                    </button>
+                                <div matListItemTitle>{{folder.folderName }}</div>
+            
+                                <div matListItemLine>
+                                    {{folder._creationTime | date}}
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+
+                        <button mat-raised-button color="primary" (click)="newFolderDialog()">
+                            <mat-icon class="material-symbols-outlined">create_new_folder</mat-icon>
+                            Add New Canva Folder
+                        </button>
+
+
+
+
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" class="text-white" (click)="getCanvaFolders()">
+                                <mat-icon class="material-symbols-outlined">folder_open</mat-icon>
+                                My Canva Folders
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+
+
+                </mat-tab>
+                <mat-tab label="Assets">
+                    <ng-template mat-tab-label>
+                        <span class="m-2 p-2">
+                            <mat-icon color="accent"
+                                class="material-symbols-outlined pr-2">collections_library</mat-icon>
+                            Assets
+                        </span>
+                    </ng-template>
+                    <mat-card>
+                        <mat-card-actions>
+                            <button mat-raised-button class="p-1">
+                                <mat-icon class="material-symbols-outlined">attachment</mat-icon>
+                                <input type="file" id="attachments" (change)="onFileChange($event)" accept="*" />
+                            </button>
+
+                            <mat-divider></mat-divider>
+                            <button mat-raised-button color="primary" class="text-white" (click)="ngOnSubmit()">
+                                <mat-icon class="material-symbols-outlined">upload</mat-icon>
+                                Upload Asset
+                            </button>
+
+                            <button mat-stroked-button color="accent" (click)="getCanvaAssets()">
+                                Get Assets
+                            </button>
+
+
+                        </mat-card-actions>
+                        <mat-card-content>
+                            <mat-list class="list-group" *ngIf="CanvaAssets">
+                            <div mat-subheader>Assets</div>
+                            <mat-list-item class="list-group-item d-flex" *ngFor="let asset of CanvaAssets">
+                                <button  matListItemIcon mat-icon-button color="warn" (click)="previewAssetDialog(asset)"
+                                        matTooltip="Asset Details">
+                                        <mat-icon class="material-symbols-outlined">collections_library</mat-icon>
+                                    </button>
+                                <div matListItemTitle>{{ asset.assetName }}</div>
+            
+                                <div matListItemLine>
+                                    {{asset._creationTime | date}}
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+
+                        </mat-card-content>
+                    </mat-card>
+                </mat-tab>
+                <mat-tab label="Designs">
+                    <ng-template mat-tab-label>
+                        <span class="m-2 p-2">
+                            <mat-icon color="accent" class="material-symbols-outlined pr-2">design_services</mat-icon>
+                            Designs
+                        </span>
+                    </ng-template>
+                    <mat-card>
+                        <mat-card-actions>
+                            <button mat-raised-button color="warn" (click)="newCanvaDesign()">
+                                Create New Canva Design
+                            </button>
+
+                            <button mat-raised-button color="primary" (click)="getCanvaDesigns()">
+                                Get Canva Designs
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+
+
+                </mat-tab>
+                <mat-tab label="Brand Templates">
+                    <ng-template mat-tab-label>
+                        <span class="m-2 p-2">
+                            <mat-icon color="accent"
+                                class="material-symbols-outlined pr-2">collections_library</mat-icon>
+                            Brand Templates
+                        </span>
+                    </ng-template>
+                        <mat-card>
+
+                            <mat-card-content>
+                                <button mat-raised-button color="primary" class="text-white" (click)="getCanvaBrandTemplates()">
+                                    <mat-icon class="material-symbols-outlined">send</mat-icon>
+                                    Get Canva Brand Templates
+                                </button>                            
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-tab>
+            </mat-tab-group>
+
+
+
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button mat-raised-button color="primary" class="text-white" (click)="ngOnSubmit()">
+                <mat-icon class="material-symbols-outlined">send</mat-icon>
+                Upload Asset
+            </button>
+
+            <button mat-stroked-button color="accent" (click)="getCanvaAssets()">
+                Get Assets
+            </button>
+
+            <button mat-stroked-button color="warn" (click)="geminiAsset()">
+                Gemini Assets
+            </button>
+
+            <button mat-raised-button color="warn" (click)="newCanvaDesign()">
+                Create New Canva Design
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</section>

@@ -1,0 +1,197 @@
+<nav class="mat-elevation-z8 mb-1">
+  <mat-toolbar class="mat-elevation-z6">
+    <mat-toolbar-row color="primary" class="bg-whiter" style="justify-content: flex-end !important;">
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="bg-whiter text-primary" id="apps">
+        <mat-icon class="material-symbols-outlined">apps</mat-icon>
+      </button>
+      <h2 class="pr-2 text-ks">MISoko</h2>
+      <mat-menu #menu="matMenu">
+        <a routerLink="/home">
+          <button mat-menu-item>
+            <mat-icon class="material-symbols-outlined">home</mat-icon>
+            <h3 class="text-primary">MISoko</h3>
+            <small>For All Your Shopping Needs</small>
+          </button>
+        </a>
+        <mat-divider></mat-divider>
+
+        <button mat-menu-item [matMenuTriggerFor]="accounts">
+          <mat-icon class="material-symbols-outlined">settings_suggest</mat-icon>
+          Manage Account
+        </button>
+
+        <mat-menu #accounts="matMenu">
+          <a routerLink="/profile/new" *ngIf="accountEmail">
+            <button mat-menu-item>
+              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+              New Profile
+            </button>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <a routerLink="/preferences" *ngIf="accountEmail">
+            <button mat-menu-item>
+              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+              My Content Preferences
+            </button>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <a routerLink="/profile/new" *ngIf="accountEmail">
+            <button mat-menu-item>
+              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+              New Profile
+            </button>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <a routerLink="/profile/edit/{{ profileId }}" *ngIf="accountEmail">
+            <button mat-menu-item>
+              <mat-icon class="material-symbols-outlined">edit_circle</mat-icon>
+              Edit Profile
+            </button>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <button mat-menu-item *ngIf="accountEmail">
+            <mat-icon class="material-symbols-outlined">lock</mat-icon>
+            Logout
+          </button>
+
+        </mat-menu>
+        <mat-divider></mat-divider>
+
+
+        <mat-divider></mat-divider>
+
+        <a routerLink="/my-content" *ngIf="accountEmail">
+          <button mat-menu-item>
+            <mat-icon class="material-symbols-outlined">edit_document</mat-icon>
+            My Content
+          </button>
+        </a>
+
+        <mat-divider></mat-divider>
+
+        <h4 class="pr-3" *ngIf="accountEmail">Logged in as: <span class="text-warn">{{ accountEmail }}</span></h4>
+        <h4 class="pr-3" *ngIf="!accountEmail">Not Logged in. <a routerLink="/personal/auth/signin">Login to
+            Continue</a></h4>
+
+        <mat-divider></mat-divider>
+      </mat-menu>
+
+      <div>
+
+        <button mat-menu-item color="accent" [matMenuTriggerFor]="ADsLinks">
+          <mat-icon class="material-symbols-outlined">add</mat-icon>
+          Post AD
+        </button>
+
+        <mat-menu #ADsLinks="matMenu">
+          <a routerLink="/eNAppliances/new">
+            <button mat-menu-item>
+              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+              Electrical And Appliances
+            </button>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <a routerLink="/pNAccessories/new">
+            <button mat-menu-item>
+              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+              Phones And Accessories
+            </button>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <a routerLink="/lNProperties/new">
+            <button mat-menu-item>
+              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+              Land And Properties
+            </button>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <a routerLink="/sNIndustry/new">
+            <button mat-menu-item>
+              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+              Service And Industry
+            </button>
+          </a>
+
+          <mat-divider></mat-divider>
+
+         <a routerLink="/autoMobiles/new">
+            <button mat-menu-item>
+              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
+              AutoMobiles
+            </button>
+          </a>
+
+        </mat-menu>
+      </div>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row color="accent" class="mat-elevation-z4 text-white display-flex mb-2 bg-accent"
+      style="justify-content: flex-end !important;">
+      <div>
+        <a routerLink="/lNProperties" class="text-white">
+          <span class="p-1 m-1">Land & Properties </span>
+        </a>
+
+        <a routerLink="/autoMobiles" class="text-white">
+          <span class="p-1 m-1">AutoMobiles </span>
+        </a>
+
+        <a routerLink="/sNIndustry" class="text-white">
+          <span class="p-1 m-1">Service & Industry</span>
+        </a>
+
+        <a routerLink="/pNAccessories" class="text-white">
+          <span class="p-1 m-1">Phones & Accessories</span>
+        </a>
+
+        <a routerLink="/eNAppliances" class="text-white">
+          <span class="p-1 m-1">Electricals & Appliances</span>
+        </a>
+
+        <button mat-stroked-button color="primary" class="text-white" data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop">
+          AI
+          <mat-icon class="material-symbols-outlined">model_training</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</nav>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Let Gemini Help</h1>
+        <button mat-mini-fab color="warn" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"
+          align="end">
+          <mat-icon class="material-symbols-outlined">close</mat-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <app-MISoko-ai></app-MISoko-ai> -->
+      </div>
+      <div class="modal-footer">
+        <button mat-raised-button color="warn" class="btn-close text-white" data-bs-dismiss="modal" align="end">
+          <mat-icon class="material-symbols-outlined">close</mat-icon>
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

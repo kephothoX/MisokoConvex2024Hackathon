@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>Asset Preview</h2>
+<mat-dialog-content class="mat-typography">
+    <mat-card>
+        <mat-list class="list-group d-flex p-1" *ngIf="Asset">
+            <div mat-subheader><mat-icon matListItemIcon>photo_library</mat-icon></div>
+            <mat-list-item class="list-group-item d-flex flex-row">                
+                <div matListItemTitle>{{ Asset.name }}</div>
+                <div matListItemLine> {{ Asset.created_at | date }}</div>
+                <div matListItemLine>
+                     <img 
+                     width="{{ Asset.thumbnail.width }}"
+                     height="{{ Asset.thumbnail.height }}"
+                     class="img-fluid rounded mx-auto d-block" 
+                     src="{{ Asset.thumbnail.url }}" 
+                     alt="MISoko"/>
+                </div>
+            </mat-list-item>
+        </mat-list>
+        <mat-card-actions *ngIf="Asset" class="d-flex flex-row">
+            <h2>Update Asset</h2>
+            <form [formGroup]="updateAssetForm" (ngSubmit)="updateAsset()"
+                class="mat-elevation-z4 centered form col-lg-6 col-md-10 col-sm-12"
+                enctype="application/x-www-form-url-encoded">
+
+
+                <mat-form-field appearance="fill" class="p-1  form-control">
+                    <mat-label>Asset Name </mat-label>
+                    <mat-icon matPrefix class="material-symbols-outlined">edit</mat-icon>
+                    <mat-hint align="end"></mat-hint>
+                    <input type="text" matInput formControlName="name" placeholder="Update Asset">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="p-1  form-control">
+                    <mat-label>Asset Tags </mat-label>
+                    <mat-icon matPrefix class="material-symbols-outlined">info</mat-icon>
+                    <mat-hint align="end"></mat-hint>
+                    <input type="text" matInput formControlName="tags" placeholder="Update Asset Tags">
+                </mat-form-field>
+
+
+                <mat-card-actions class="align-buttons-center">
+                    <button type="submit" mat-raised-button color="primary"
+                        [disabled]="!updateAssetForm.valid">
+                        <mat-icon class="material-symbols-outlined">edit</mat-icon>Rename
+                        Asset</button>
+                    <button type="reset" mat-raised-button color="warn">
+                        <mat-icon class="material-symbols-outlined">cancel</mat-icon>
+                        Clear</button>
+                </mat-card-actions>
+
+            </form>
+            <!--<button mat-raised-button color="accent" (click)="folderItemsDialog(Folder)" matTooltip="Rename Canva Folder">
+                <mat-icon class="material-symbols.outlined">folder_data</mat-icon>
+                Folder Items
+            </button>
+            <mat-divider></mat-divider>
+
+            <button mat-edit-button color="accent" (click)="editFolderDialog(Folder)" matTooltip="Rename Canva Folder">
+                <mat-icon class="material-symbols.outlined">edit</mat-icon>
+                Edit Folder
+            </button>
+            <mat-divider></mat-divider>
+
+            <button mat-raised-button color="warn" (click)="deleteFolder(Folder)" matTooltip="Delete Canva Folder">
+                <mat-icon class="material-symbols.outlined">delete</mat-icon>
+                Delete Folder
+            </button> -->
+            <mat-divider></mat-divider>
+        </mat-card-actions>
+        <mat-card-footer><small>{{ Response }}</small></mat-card-footer>
+    </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" class="text-white" [mat-dialog-close]="true" cdkFocusInitial>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+        Close
+    </button>
+</mat-dialog-actions>

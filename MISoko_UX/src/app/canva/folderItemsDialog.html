@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Folder Items</h2>
+<mat-dialog-content class="mat-typography">
+    <mat-card class="mat-elevation-z6">
+        <mat-card-content *ngIf="FolderItems">
+            <mat-list class="list-group d-flex p-1" *ngFor="let item of FolderItems">
+                <div mat-subheader><mat-icon matListItemIcon>asset</mat-icon></div>
+                <mat-list-item class="list-group-item d-flex flex-row">
+                    <div matListItemTitle class="pb-2">{{ item.asset.name}}</div>
+                    <div matListItemLine class="d-flex">
+                        <img class="img-fluid rounded mx-auto d-block" src="{{ item.asset.thumbnail.url }}" alt="MISoko"/>
+                    </div>
+
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+        <mat-card-footer><small>{{ Response }}</small></mat-card-footer>
+    </mat-card>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" class="text-white" [mat-dialog-close]="true" cdkFocusInitial>
+        <mat-icon class="material-symbols-outlined">close</mat-icon>
+        Close
+    </button>
+</mat-dialog-actions>

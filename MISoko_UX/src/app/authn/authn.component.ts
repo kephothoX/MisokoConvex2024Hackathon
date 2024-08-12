@@ -3,14 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthnService } from './authn.service';
 
-import { AuthService } from '@auth0/auth0-angular';
 
 
 @Component({
   selector: 'app-authn',
   templateUrl: './authn.component.html',
-  styleUrls: ['./authn.component.scss'],
-  providers: [ AuthService ]
+  styleUrls: ['./authn.component.scss']
 })
 export class AuthnComponent implements OnInit {
   User: any;

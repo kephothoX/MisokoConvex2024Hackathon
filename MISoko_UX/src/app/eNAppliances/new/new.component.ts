@@ -74,6 +74,11 @@ export class NewComponent implements OnInit {
  
   }
 
+  resetForm(): void {
+    this.newENAppliancesForm.reset();
+  }
+
+  
   onFileChange(event: any) {
     if (event.target.files && event.target.files.length) {
 
@@ -96,9 +101,7 @@ export class NewComponent implements OnInit {
 
 
 
-  resetForm(): void {
-    this.newENAppliancesForm.reset();
-  }
+  
 
   getCanvaDesigns(): void {
     this._canvaService.InitializeCanva();

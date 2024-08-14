@@ -49,7 +49,9 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getENAppliances();    
+    this.getENAppliances();
+    
+    this.getPNAccessories();
   }
 
   getENAppliances() {

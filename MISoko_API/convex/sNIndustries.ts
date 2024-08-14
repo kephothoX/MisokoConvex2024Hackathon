@@ -4,14 +4,20 @@ import { api, internal } from './_generated/api';
 
 
 export const newSNIndustry = httpAction(async (ctx, request) => {
-    let response;
-    await request.formData().then(async (data: any) => {
-        console.log(data);
-        
+  let response;
+  await request.formData().then(async (data: any) => {
+    console.log(data);
 
-    if (data.get('ad_image')) {
-      const storageId = await ctx.storage.store(data.get('ad_image') as Blob);
-      const storageURL = await ctx.storage.getUrl(storageId);
+
+    if (data.get('ad_images[]')) {
+      const ad_images = new Array();
+
+      for (let img of data.getAll('ad_images[]')) {
+        const blob_img = img as Blob;
+        const storageId = await ctx.storage.store(blob_img);
+        ad_images.push(await ctx.storage.getUrl(storageId));
+
+      }
 
       const sNIndustry = {
         created_by: data.get('created_by'),
@@ -19,7 +25,7 @@ export const newSNIndustry = httpAction(async (ctx, request) => {
         location: data.get('location'),
         price_amount: parseFloat(data.get('price_amount')),
         video_link: data.get('video_link'),
-        ad_image: storageURL,
+        ad_images: ad_images,
         description: data.get('description'),
         published: true,
         phone_number: data.get('phone_number'),
@@ -27,9 +33,9 @@ export const newSNIndustry = httpAction(async (ctx, request) => {
         updated_at: new Date().toISOString()
       }
 
-        response = await ctx.runMutation(api.sNIndustriesMutations.newSNIndustry, sNIndustry);
-    
-      
+      response = await ctx.runMutation(api.sNIndustriesMutations.newSNIndustry, sNIndustry);
+
+
     } else {
 
       const sNIndustry = {
@@ -38,7 +44,7 @@ export const newSNIndustry = httpAction(async (ctx, request) => {
         location: data.get('location'),
         price_amount: parseFloat(data.get('price_amount')),
         video_link: data.get('video_link'),
-        ad_image: 'No_Ad_Image',
+        ad_images: ['No_Ad_Images'],
         description: data.get('description'),
         published: true,
         phone_number: data.get('phone_number'),
@@ -46,19 +52,34 @@ export const newSNIndustry = httpAction(async (ctx, request) => {
         updated_at: new Date().toISOString()
       }
 
-        response = await ctx.runMutation(api.sNIndustriesMutations.newSNIndustry, sNIndustry);
-        
+      response = await ctx.runMutation(api.sNIndustriesMutations.newSNIndustry, sNIndustry);
+
     }
   });
 
   return new Response(JSON.stringify(response), {
     headers: new Headers({
-        'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
-        'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Allow-Headers': 'Content-Type',   
-        Vary: 'origin',
-      }),
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      Vary: 'origin',
+    }),
 
+    status: 200,
+  });
+});
+
+export const getSNIndustries = httpAction(async (ctx, request) => {
+
+  const response = await ctx.runQuery(api.sNIndustriesQueries.getSNIndustries);
+
+  return new Response(JSON.stringify(response), {
+    headers: {
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      Vary: 'origin',
+    },
     status: 200,
   });
 });
@@ -67,33 +88,33 @@ export const newSNIndustry = httpAction(async (ctx, request) => {
 
 export const getAllSNIndustries = httpAction(async (ctx, request) => {
 
-    const response = await ctx.runQuery(api.sNIndustriesQueries.getAllSNIndustries);
+  const response = await ctx.runQuery(api.sNIndustriesQueries.getAllSNIndustries);
 
-    return new Response(JSON.stringify(response), {
-        headers: {
-            'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
-            'Access-Control-Allow-Methods': 'POST',
-            'Access-Control-Allow-Headers': 'Content-Type',   
-            Vary: 'origin',
-        },
-        status: 200,
-    });
+  return new Response(JSON.stringify(response), {
+    headers: {
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      Vary: 'origin',
+    },
+    status: 200,
+  });
 });
 
 export const getSNIndustryById = httpAction(async (ctx, request) => {
-    const params = JSON.parse(await request.text());
+  const params = JSON.parse(await request.text());
 
-    const response = await ctx.runQuery(api.sNIndustriesQueries.getSNIndustryById, params);
-    console.log(response);
+  const response = await ctx.runQuery(api.sNIndustriesQueries.getSNIndustryById, params);
+  console.log(response);
 
-    return new Response(JSON.stringify(response), {
-        headers: {
-            'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
-            'Access-Control-Allow-Methods': 'POST',
-            'Access-Control-Allow-Headers': 'Content-Type',   
-            Vary: 'origin',
-        },
-        status: 200,
-    });
+  return new Response(JSON.stringify(response), {
+    headers: {
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      Vary: 'origin',
+    },
+    status: 200,
+  });
 });
 

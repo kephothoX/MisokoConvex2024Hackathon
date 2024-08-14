@@ -6,8 +6,6 @@ import { api, internal } from './_generated/api';
 export const genAuthURL = httpAction(async (ctx, request) => {
   const result = await ctx.runAction(api.canvaActions.genAuthURL);
 
-  console.log(result);
-
   return new Response(JSON.stringify(result), {
     headers: new Headers({
         'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
@@ -75,6 +73,27 @@ export const inspectAccessToken = httpAction(async (ctx, request) => {
   });
 
 });
+
+
+export const revokeRefreshToken = httpAction(async (ctx, request) => {
+  const params = JSON.parse(await request.text());
+  const result = await ctx.runAction(api.canvaActions.revokeRefreshToken, params);
+
+  return new Response(JSON.stringify(result), {
+    headers: new Headers({
+        'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+        'Access-Control-Allow-Methods': 'POST',
+        'Access-Control-Allow-Headers': 'Content-Type',   
+        Vary: 'origin',
+      }),
+
+    status: 200,
+  });
+
+});
+
+
+
 
 export const getUserProfile = httpAction(async (ctx, request) => {
   const params = JSON.parse(await request.text());
@@ -361,6 +380,8 @@ export const newCanvaDesign = httpAction(async (ctx, request) => {
   const params = JSON.parse(await request.text());
   
   const result = await ctx.runAction(api.canvaActions.newCanvaDesign, params );
+
+  console.log(result);
 
   return new Response(JSON.stringify(result), {
     headers: new Headers({

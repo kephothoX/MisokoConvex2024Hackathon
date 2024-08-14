@@ -64,7 +64,7 @@
                       <mat-progress-bar  mode="buffer" color="accent"></mat-progress-bar>
                     </mat-card-actions>  
  
-                    <ul class="list-group" *ngIf="Designs">
+                    <ul class="list-group" *ngIf="Designs" #uploads>
                       <li class="list-group-item d-flex flex-column" *ngFor="let design of Designs">
 
                         <div class="col-lg-4 col-md-6 col-sm-12">

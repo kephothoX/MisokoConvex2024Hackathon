@@ -29,11 +29,6 @@ const codeChallenge = process.env.CANVA_CODE_CHALLENGE;
 export const genAuthURL = action({
   handler: async (ctx) => {
 
-    console.log(process.env.CANVA_CODE_VERIFIER);
-
-    console.log(process.env.CANVA_CODE_CHALLENGE);
-
-
     return `https://www.canva.com/api/oauth/authorize?code_challenge_method=s256&response_type=code&client_id=OC-AZETAQLqjrMr&scope=app:read%20design:content:read%20design:meta:read%20design:content:write%20design:permission:read%20design:permission:write%20folder:read%20folder:write%20folder:permission:read%20folder:permission:write%20asset:read%20asset:write%20comment:read%20comment:write%20brandtemplate:meta:read%20brandtemplate:content:read%20profile:read&code_challenge=${codeChallenge}`;
 
   }
@@ -422,26 +417,32 @@ export const deleteCanvaAsset = action({
 
 export const newCanvaDesign = action({
   handler: async (ctx, args) => {
+    let res;
 
-    axios({
+    await axios({
       url: "https://api.canva.com/rest/v1/designs",
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${args.accessToken}`,
+        "Authorization": `Bearer ${ args.accessToken}`,
         "Content-Type": "application/json"
       },
       data: JSON.stringify({
-        "design_type": {
-          "type": "preset",
-          "name": "doc"
+        design_type: {
+          type:  "custom",
+          width: `${ args.width }`,
+          height: `${ args.height }`,
         },
-        "title": "My Gemini Inspired Design"
+        title: `${ args.title }`,
+        assetID: `${ args.assetId }`
       }),
     }).then(async (resp) => {
 
-      return resp.data;
+      res = resp.data;
 
     }).catch(err => console.error(err));
+
+
+    return res;
   }
 });
 

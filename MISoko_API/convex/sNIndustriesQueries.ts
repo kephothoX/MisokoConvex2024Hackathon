@@ -19,5 +19,13 @@ export const getSNIndustryById = query({
   },
 });
 
+export const getSNIndustries = query({
+  handler: async (ctx) => {
+    return await ctx.db.query('sNIndustries')
+        .withIndex('by_name')
+        .take(5)   
+  }    
+});
+
 
 

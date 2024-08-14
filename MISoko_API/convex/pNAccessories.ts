@@ -5,14 +5,20 @@ import { api, internal } from './_generated/api';
 
 
 export const newPNAccessory = httpAction(async (ctx, request) => {
-    let response;
-    await request.formData().then(async (data: any) => {
-        console.log(data);
-        
+  let response;
+  await request.formData().then(async (data: any) => {
+    console.log(data);
 
-    if (data.get('ad_image')) {
-      const storageId = await ctx.storage.store(data.get('ad_image') as Blob);
-      const storageURL = await ctx.storage.getUrl(storageId);
+
+    if (data.get('ad_images[]')) {
+      const ad_images = new Array();
+
+      for (let img of data.getAll('ad_images[]')) {
+        const blob_img = img as Blob;
+        const storageId = await ctx.storage.store(blob_img);
+        ad_images.push(await ctx.storage.getUrl(storageId));
+
+      }
 
       const pNAccessory = {
         created_by: data.get('created_by'),
@@ -21,17 +27,18 @@ export const newPNAccessory = httpAction(async (ctx, request) => {
         location: data.get('location'),
         price_amount: parseFloat(data.get('price_amount')),
         video_link: data.get('video_link'),
-        ad_image: storageURL,
+        ad_images: ad_images,
         description: data.get('description'),
         published: true,
-        phone_number: data.get('phone_number'),
+        ad_phone_number: data.get('ad_phone_number'),
+        ad_email: data.get('ad_email'),
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       }
 
-        response = await ctx.runMutation(api.pNAccessoriesMutations.addNewPNAccessory, pNAccessory);
-    
-      
+      response = await ctx.runMutation(api.pNAccessoriesMutations.addNewPNAccessory, pNAccessory);
+
+
     } else {
 
       const pNAccessory = {
@@ -41,26 +48,27 @@ export const newPNAccessory = httpAction(async (ctx, request) => {
         location: data.get('location'),
         price_amount: parseFloat(data.get('price_amount')),
         video_link: data.get('video_link'),
-        ad_image: 'No_Ad_Image',
+        ad_images: ['No_Ad_Images'],
         description: data.get('description'),
-        phone_number: data.get('phone_number'),
+        ad_phone_number: data.get('ad_phone_number'),
+        ad_email: data.get('ad_email'),
         published: true,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       }
 
-        response = await ctx.runMutation(api.pNAccessoriesMutations.addNewPNAccessory, pNAccessory);
-        
+      response = await ctx.runMutation(api.pNAccessoriesMutations.addNewPNAccessory, pNAccessory);
+
     }
   });
 
   return new Response(JSON.stringify(response), {
     headers: new Headers({
-        'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
-        'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Allow-Headers': 'Content-Type',   
-        Vary: 'origin',
-      }),
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      Vary: 'origin',
+    }),
 
     status: 200,
   });
@@ -70,34 +78,50 @@ export const newPNAccessory = httpAction(async (ctx, request) => {
 
 export const getAllPNAccessories = httpAction(async (ctx, request) => {
 
-    const response = await ctx.runQuery(api.pNAccessoriesQueries.getAllPNAccessories);
+  const response = await ctx.runQuery(api.pNAccessoriesQueries.getAllPNAccessories);
 
-    return new Response(JSON.stringify(response), {
-        headers: {
-            'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
-            'Access-Control-Allow-Methods': 'POST',
-            'Access-Control-Allow-Headers': 'Content-Type',   
-            Vary: 'origin',
-        },
-        status: 200,
-    });
+  return new Response(JSON.stringify(response), {
+    headers: {
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      Vary: 'origin',
+    },
+    status: 200,
+  });
 });
 
 export const getPNAccessoryById = httpAction(async (ctx, request) => {
-    const params = JSON.parse(await request.text());
+  const params = JSON.parse(await request.text());
 
-    const response = await ctx.runQuery(api.pNAccessoriesQueries.getPNAccessoryById, params);
-    console.log(response);
+  const response = await ctx.runQuery(api.pNAccessoriesQueries.getPNAccessoryById, params);
+  console.log(response);
 
-    return new Response(JSON.stringify(response), {
-        headers: {
-            'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
-            'Access-Control-Allow-Methods': 'POST',
-            'Access-Control-Allow-Headers': 'Content-Type',   
-            Vary: 'origin',
-        },
-        status: 200,
-    });
+  return new Response(JSON.stringify(response), {
+    headers: {
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      Vary: 'origin',
+    },
+    status: 200,
+  });
 });
 
+
+
+export const getPNAccessories = httpAction(async (ctx, request) => {
+
+  const response = await ctx.runQuery(api.pNAccessoriesQueries.getPNAccessories);
+
+  return new Response(JSON.stringify(response), {
+    headers: {
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      Vary: 'origin',
+    },
+    status: 200,
+  });
+});
 

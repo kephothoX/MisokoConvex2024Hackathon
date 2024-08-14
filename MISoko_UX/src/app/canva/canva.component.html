@@ -1,6 +1,76 @@
 <section class="container-fluid">
     <mat-card>
+
+        <div class="modal fade" id="canvaDesignsModal" tabindex="-1" aria-labelledby="canvaDesignsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="canvaDesignsModalLabel">Canva Designs
+                        </h1>
+                    </div>
+                    <div class="modal-body">
+                        <mat-card class="mat-elevation-z6">
+                            <mat-card-content>
+                                <mat-card-actions *ngIf="!Designs">
+                                    <h3>Loading Designs</h3>
+                                    <mat-progress-bar mode="buffer" color="accent"></mat-progress-bar>
+                                </mat-card-actions>
+
+                                <ul class="list-group" *ngIf="Designs">
+                                    <li class="list-group-item d-flex flex-column" *ngFor="let design of Designs">
+
+                                        <div class="col-lg-4 col-md-6 col-sm-12">
+                                            <img id="adImage"
+                                                class="card-img-top img-thumbnail object-fit-fill rounded mx-auto d-block"
+                                                src="{{ design.thumbnail.url  }}" />
+                                        </div>
+                                        <button mat-raised-button color="primary" class="text-black"
+                                            (click)="uploadDesign(design.thumbnail.url )">
+                                            <mat-icon class="material-symbols-outlined">upload</mat-icon>
+                                            Upload
+                                        </button>
+
+
+                                        <button mat-raised-button color="accent" class="text-black"
+                                            (click)="continueEditingOnCanva(design.urls.edit_url )">
+                                            <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                                            Continue Editing On Canva
+                                        </button>
+
+                                        <button mat-raised-button color="warn" class="text-black"
+                                            (click)="viewOnCanva(design.urls.view_url )">
+                                            <mat-icon class="material-symbols-outlined">visibility</mat-icon>
+                                            View From Canva
+                                        </button>
+                                    </li>
+                                    <mat-divider></mat-divider>
+                                </ul>
+
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="https://canva.com">
+                            <button mat-fab extended color="primary">
+                                Continue With
+                                <img src="assets/canva/canva_blue.svg" alt="canva" class="img-thumbnail" />
+                            </button>
+                        </a>
+                        <button mat-icon-button color="warn" data-bs-dismiss="modal">
+                            <mat-icon class="material-symbols-outlined">close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <mat-card-content>
+            <button mat-raised-button color="warn" class="text-white" (click)="exitCanva()">
+                <mat-icon class="material-symbols-outlined">logout</mat-icon>
+                Exit  Canva
+            </button>
             <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" class="nav-tabs">
                 <mat-tab label="Folders">
                     <ng-template mat-tab-label>
@@ -15,12 +85,12 @@
                         <mat-list class="list-group" *ngIf="Folders">
                             <div mat-subheader>Folders</div>
                             <mat-list-item class="list-group-item d-flex" *ngFor="let folder of Folders">
-                                <button  matListItemIcon mat-icon-button color="warn" (click)="folderInfoDialog(folder)"
-                                        matTooltip="Folder Details">
-                                        <mat-icon class="material-symbols-outlined">folder</mat-icon>
-                                    </button>
+                                <button matListItemIcon mat-icon-button color="warn" (click)="folderInfoDialog(folder)"
+                                    matTooltip="Folder Details">
+                                    <mat-icon class="material-symbols-outlined">folder</mat-icon>
+                                </button>
                                 <div matListItemTitle>{{folder.folderName }}</div>
-            
+
                                 <div matListItemLine>
                                     {{folder._creationTime | date}}
                                 </div>
@@ -74,19 +144,19 @@
                         </mat-card-actions>
                         <mat-card-content>
                             <mat-list class="list-group" *ngIf="CanvaAssets">
-                            <div mat-subheader>Assets</div>
-                            <mat-list-item class="list-group-item d-flex" *ngFor="let asset of CanvaAssets">
-                                <button  matListItemIcon mat-icon-button color="warn" (click)="previewAssetDialog(asset)"
-                                        matTooltip="Asset Details">
+                                <div mat-subheader>Assets</div>
+                                <mat-list-item class="list-group-item d-flex" *ngFor="let asset of CanvaAssets">
+                                    <button matListItemIcon mat-icon-button color="warn"
+                                        (click)="previewAssetDialog(asset)" matTooltip="Asset Details">
                                         <mat-icon class="material-symbols-outlined">collections_library</mat-icon>
                                     </button>
-                                <div matListItemTitle>{{ asset.assetName }}</div>
-            
-                                <div matListItemLine>
-                                    {{asset._creationTime | date}}
-                                </div>
-                            </mat-list-item>
-                        </mat-list>
+                                    <div matListItemTitle>{{ asset.assetName }}</div>
+
+                                    <div matListItemLine>
+                                        {{asset._creationTime | date}}
+                                    </div>
+                                </mat-list-item>
+                            </mat-list>
 
                         </mat-card-content>
                     </mat-card>
@@ -100,13 +170,18 @@
                     </ng-template>
                     <mat-card>
                         <mat-card-actions>
-                            <button mat-raised-button color="warn" (click)="newCanvaDesign()">
+                            <button mat-raised-button color="warn" (click)="newDesignDialog()">
                                 Create New Canva Design
                             </button>
 
-                            <button mat-raised-button color="primary" (click)="getCanvaDesigns()">
+                            <button mat-raised-button color="primary" (click)="getCanvaDesigns()" data-bs-toggle="modal"
+                                data-bs-target="#canvaDesignsModal">
                                 Get Canva Designs
                             </button>
+                            <mat-divider></mat-divider>
+
+
+
                         </mat-card-actions>
                     </mat-card>
 
@@ -120,39 +195,19 @@
                             Brand Templates
                         </span>
                     </ng-template>
-                        <mat-card>
+                    <mat-card>
 
-                            <mat-card-content>
-                                <button mat-raised-button color="primary" class="text-white" (click)="getCanvaBrandTemplates()">
-                                    <mat-icon class="material-symbols-outlined">send</mat-icon>
-                                    Get Canva Brand Templates
-                                </button>                            
-                            </mat-card-content>
-                        </mat-card>
-                    </mat-tab>
+                        <mat-card-content>
+                            <button mat-raised-button color="primary" class="text-white"
+                                (click)="getCanvaBrandTemplates()">
+                                <mat-icon class="material-symbols-outlined">send</mat-icon>
+                                Get Canva Brand Templates
+                            </button>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-tab>
             </mat-tab-group>
 
-
-
         </mat-card-content>
-
-        <mat-card-actions>
-            <button mat-raised-button color="primary" class="text-white" (click)="ngOnSubmit()">
-                <mat-icon class="material-symbols-outlined">send</mat-icon>
-                Upload Asset
-            </button>
-
-            <button mat-stroked-button color="accent" (click)="getCanvaAssets()">
-                Get Assets
-            </button>
-
-            <button mat-stroked-button color="warn" (click)="geminiAsset()">
-                Gemini Assets
-            </button>
-
-            <button mat-raised-button color="warn" (click)="newCanvaDesign()">
-                Create New Canva Design
-            </button>
-        </mat-card-actions>
     </mat-card>
 </section>

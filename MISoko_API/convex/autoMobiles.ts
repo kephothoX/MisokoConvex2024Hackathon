@@ -7,9 +7,15 @@ export const newAutoMobile = httpAction(async (ctx, request) => {
   let response;
   await request.formData().then(async (data: any) => {
 
-    if (data.get('ad_image')) {
-      const storageId = await ctx.storage.store(data.get('ad_image') as Blob);
-      const storageURL = await ctx.storage.getUrl(storageId);
+     if (data.get('ad_images[]')) {
+      const ad_images = new Array();
+
+      for (let img of data.getAll('ad_images[]')) {
+        const blob_img = img as Blob;
+        const storageId = await ctx.storage.store(blob_img);
+        ad_images.push(await ctx.storage.getUrl(storageId));
+
+      }
 
       const autoMobile = {
         created_by: data.get('created_by'),
@@ -25,7 +31,7 @@ export const newAutoMobile = httpAction(async (ctx, request) => {
         key_features: data.get('key_features'),
         description: data.get('description'),
         video_link: data.get('video_link'),
-        ad_images: data.get('ad_image'),
+        ad_images: ad_images,
         published: true,
         ad_phone_number: data.get('ad_phone_number'),
         ad_email: data.get('ad_email'),
@@ -53,7 +59,7 @@ export const newAutoMobile = httpAction(async (ctx, request) => {
         key_features: data.get('key_features'),
         description: data.get('description'),
         video_link: data.get('video_link'),
-        ad_images: 'No_Ad_Image',
+        ad_images: ['No_Ad_Images'],
         price_amount: data.get('price_amount'),
         published: true,
         ad_phone_number: data.get('ad_phone_number'),

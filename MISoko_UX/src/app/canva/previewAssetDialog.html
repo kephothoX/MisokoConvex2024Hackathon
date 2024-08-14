@@ -6,6 +6,8 @@
             <mat-list-item class="list-group-item d-flex flex-row">                
                 <div matListItemTitle>{{ Asset.name }}</div>
                 <div matListItemLine> {{ Asset.created_at | date }}</div>
+
+                <div matListItemLine> {{ Asset.id }}</div>
                 <div matListItemLine>
                      <img 
                      width="{{ Asset.thumbnail.width }}"

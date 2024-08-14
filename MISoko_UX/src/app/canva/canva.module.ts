@@ -13,15 +13,17 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule }  from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 import { CanvaRoutingModule } from './canva-routing.module';
-import { CanvaComponent, NewFolderDialog, EditFolderDialog, FolderInfoDialog, FolderItemsDialog, PreviewAssetDialog } from './canva.component';
+import { CanvaComponent, NewDesignDialog, NewFolderDialog, EditFolderDialog, FolderInfoDialog, FolderItemsDialog, PreviewAssetDialog } from './canva.component';
 
 
 @NgModule({
   declarations: [
     CanvaComponent,
     NewFolderDialog,
+    NewDesignDialog,
     EditFolderDialog,
     FolderInfoDialog,
     FolderItemsDialog,
@@ -42,7 +44,8 @@ import { CanvaComponent, NewFolderDialog, EditFolderDialog, FolderInfoDialog, Fo
     MatListModule,
     MatMenuModule,
     MatTabsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressBar
   ]
 })
 export class CanvaModule { }

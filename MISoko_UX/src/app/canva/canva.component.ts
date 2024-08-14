@@ -40,6 +40,23 @@ export class CanvaComponent implements OnInit {
     this._canvaService.InitializeCanva();
   }
 
+  continueEditingOnCanva(url: String): void {
+    window.location.href = `${ url }`;
+
+  }
+
+  exitCanva(): void{
+    this._authnService.revokeRefreshToken({
+      refreshToken: `${ window.sessionStorage.getItem('refreshToken')}`
+    }).subscribe((response: any) => {
+      this._router.navigate(['/home']);
+    });
+  }
+
+  viewOnCanva(url: String): void {
+    window.location.href = `${ url }`;
+  }
+
 
   newFolderDialog() {
     this._matDialog.open(NewFolderDialog);
@@ -87,6 +104,13 @@ export class CanvaComponent implements OnInit {
       this.CanvaAssets = response;
       console.log(this.CanvaAssets);
     });
+  }
+
+
+  newDesignDialog() {
+    this._matDialog.open(
+      NewDesignDialog   
+    );
   }
 
 
@@ -140,8 +164,6 @@ export class CanvaComponent implements OnInit {
       accessToken: window.sessionStorage.getItem('accessToken'),
     }).subscribe((res: any) => {
       this.Designs = res.items;
-      console.log(res);
-
       console.log(this.Designs);
     });
 
@@ -178,6 +200,52 @@ export class CanvaComponent implements OnInit {
   });
     
   }
+}
+
+
+@Component({
+  selector: 'new-design-dialog',
+  templateUrl: 'newDesignDialog.html',
+})
+export class NewDesignDialog implements OnInit{
+  Response: any;
+  CanvaDocs: String[] = ['doc', 'presentation', 'whiteboard'];
+
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: FolderE,
+    private _canvaService: CanvaService,
+    private _formBuilder: FormBuilder,
+    private _matDialog: MatDialog,
+    public _matSnackBar: MatSnackBar
+  ) {}
+
+
+  ngOnInit(): void {
+    
+  }
+
+  newDesignForm = this._formBuilder.group({
+    width: ['', Validators.required],
+    height: ['', Validators.required],
+    assetId: ['', Validators.required],
+    title: ['', Validators.required]
+  })
+
+
+  createNewDesign() {
+    this._canvaService.newCanvaDesign({ 
+      accessToken: window.sessionStorage.getItem('accessToken'),
+      width: this.newDesignForm.value.width,
+      height: this.newDesignForm.value.height,
+      assetId: this.newDesignForm.value.assetId,
+      title: this.newDesignForm.value.title
+    }).subscribe((response: any) => {
+      this.Response = JSON.stringify(response.design);
+
+    });
+  }
+  
 }
 
 

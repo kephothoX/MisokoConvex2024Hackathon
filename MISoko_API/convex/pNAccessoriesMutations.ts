@@ -24,7 +24,8 @@ export const updatePNAccessories = mutation({
     video_link: v.string(),
     published: v.boolean(),
     location: v.string(),
-    phone_number: v.string(),
+    ad_phone_number: v.string(),
+    ad_email: v.string(),
     created_by: v.string()
   },
 
@@ -41,7 +42,8 @@ export const updatePNAccessories = mutation({
       ad_images: args.ad_images,
       video_link: args.video_link,
       published: args.published,
-      phone_number: args.phone_number,
+      ad_phone_number: args.ad_phone_number,
+      ad_email: args.ad_email,
       location: args.location,
       created_by: args.created_by
     });

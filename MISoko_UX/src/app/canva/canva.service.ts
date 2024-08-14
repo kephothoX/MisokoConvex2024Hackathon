@@ -94,7 +94,7 @@ export class CanvaService {
   };
 
   newCanvaDesign(data: any): Observable<any> {
-    return this._httpClient.post(`${this._appService.APIEndpoint}/design`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${this._appService.APIEndpoint}/designs/new`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   getCanvaBrandTemplates(data: any): Observable<any> {

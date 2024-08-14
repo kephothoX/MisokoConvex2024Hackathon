@@ -133,6 +133,7 @@ export class NewComponent implements OnInit {
   }
 
   async uploadDesign(url: String) {
+    
 
     const getUrlExtension = (url: any) => {
       return url

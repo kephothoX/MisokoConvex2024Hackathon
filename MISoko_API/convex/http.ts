@@ -6,11 +6,26 @@ import {
 } from './auth';
 
 import {
+  newAutoMobile,
+  getAllAutoMobiles,
+  getAutoMobileById,
+  getAutoMobiles
+} from './autoMobiles';
+
+
+import {
   newENAppliance,
   getAllENAppliances,
   getENApplianceById,
   getENAppliances
 } from './eNAppliances';
+
+import {
+  newPNAccessory,
+  getAllPNAccessories,
+  getPNAccessoryById,
+  getPNAccessories
+} from './pNAccessories';
 
 
 import {
@@ -18,13 +33,21 @@ import {
   getAllLNProperties,
   getLNPropertyById,
   getLNProperties
-} from './lNProperties'
+} from './lNProperties';
+
+import {
+  newSNIndustry,
+  getAllSNIndustries,
+  getSNIndustryById,
+  getSNIndustries
+} from './sNIndustries';
 
 import { 
   genAuthURL,
   genRefreshToken,
   genAccessToken,
   inspectAccessToken,
+  revokeRefreshToken,
   getUserProfile,
   getUserID,
   getCanvaBrandTemplates,
@@ -40,7 +63,8 @@ import {
   getCanvaAssets,
   getCanvaAsset,
   updateCanvaAsset,
-  deleteCanvaAsset
+  deleteCanvaAsset,
+  newCanvaDesign
 
 } from './canva';
 
@@ -70,6 +94,12 @@ http.route({
   path: '/api/inspect-access-token',
   method: 'POST',
   handler: inspectAccessToken
+});
+
+http.route({
+  path: '/api/revoke-refresh-token',
+  method: 'POST',
+  handler: revokeRefreshToken
 });
 
 http.route({
@@ -159,6 +189,11 @@ http.route({
   handler: getCanvaDesigns
 });
 
+http.route({
+  path: '/api/designs/new',
+  method: 'POST',
+  handler: newCanvaDesign
+});
 
 http.route({
   path: '/api/design',
@@ -171,6 +206,30 @@ http.route({
   path: '/api/assets/new',
   method: 'POST',
   handler: newCanvaAsset
+});
+
+http.route({
+  path: '/api/autoMobiles/new',
+  method: 'POST',
+  handler: newAutoMobile
+});
+
+http.route({
+  path: '/api/autoMobile',
+  method: 'GET',
+  handler: getAllAutoMobiles
+});
+
+http.route({
+  path: '/api/autoMobiles/5',
+  method: 'GET',
+  handler: getAutoMobiles
+});
+
+http.route({
+  path: '/api/autoMobile',
+  method: 'POST',
+  handler: getAutoMobileById
 });
 
 
@@ -196,6 +255,56 @@ http.route({
   path: '/api/eNAppliance',
   method: 'POST',
   handler: getENApplianceById
+});
+
+
+http.route({
+  path: '/api/sNIndustries/new',
+  method: 'POST',
+  handler: newSNIndustry
+});
+
+http.route({
+  path: '/api/sNIndustries',
+  method: 'GET',
+  handler: getAllSNIndustries
+});
+
+http.route({
+  path: '/api/sNIndustries/5',
+  method: 'GET',
+  handler: getSNIndustries
+});
+
+http.route({
+  path: '/api/sNIndustry',
+  method: 'POST',
+  handler: getSNIndustryById
+});
+
+
+http.route({
+  path: '/api/pNAccessories/new',
+  method: 'POST',
+  handler: newPNAccessory
+});
+
+http.route({
+  path: '/api/pNAccessories',
+  method: 'GET',
+  handler: getAllPNAccessories
+});
+
+http.route({
+  path: '/api/pNAccessories/5',
+  method: 'GET',
+  handler: getPNAccessories
+});
+
+http.route({
+  path: '/api/pNAccessory',
+  method: 'POST',
+  handler: getPNAccessoryById
 });
 
 

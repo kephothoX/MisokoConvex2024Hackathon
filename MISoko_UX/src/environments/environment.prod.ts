@@ -2,5 +2,5 @@
 export const environment = {
   production: true,
  
-  ENDPOINT:  'https://adept-beagle-866.convex.site/api'
+  ENDPOINT:  'https://disciplined-sandpiper-967.convex.site/api'
 };

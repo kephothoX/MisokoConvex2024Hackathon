@@ -15,6 +15,16 @@
         </a>
         <mat-divider></mat-divider>
 
+        <a routerLink="/myADs">
+          <button mat-menu-item>
+            <mat-icon class="material-symbols-outlined">home</mat-icon>
+            <h3 class="text-primary">MI-ADs</h3>
+            <small>Update Your ADs</small>
+          </button>
+        </a>
+
+        <mat-divider></mat-divider>
+
         <button mat-menu-item [matMenuTriggerFor]="accounts">
           <mat-icon class="material-symbols-outlined">settings_suggest</mat-icon>
           Manage Account

@@ -8,9 +8,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AutoMobilesService } from '../../autoMobiles/autoMobiles.service';
 
 import { AutoMobile, AutoMobileMake } from '../../autoMobiles/autoMobiles';
-
+import { Design } from 'src/app/canva/canva';
 import { take } from 'rxjs/operators';
 import { Country } from 'src/app/interfaces/country';
+import { CanvaService } from 'src/app/canva/canva.service';
 import { AppService } from 'src/app/app.service'
 
 import * as moment from 'moment';
@@ -21,10 +22,15 @@ import * as moment from 'moment';
   styleUrl: './updateAutoMobile.component.scss'
 })
 export class UpdateAutoMobileComponent {
-  AutoMobile?: AutoMobile;
-  AutoMobileMakes?: AutoMobileMake[];
   formData = new FormData();
   imageURLs = new Array();
+  adImages = new Array();
+
+  Designs?: Design[];
+  PreviewURL: any;
+  ErrMsg: String= '';
+  AutoMobile?: AutoMobile;
+  AutoMobileMakes?: AutoMobileMake[];
   AutoMobileTransmission: String[] = ['MANUAL', 'AUTOMATIC'];
  
 
@@ -33,6 +39,7 @@ export class UpdateAutoMobileComponent {
   constructor(
     private _formBuilder: FormBuilder,
     private _appService: AppService,
+    private _canvaService: CanvaService,
     private _autoMobilesService: AutoMobilesService,
     private _ngZone: NgZone,
     public _snackBar: MatSnackBar,
@@ -115,13 +122,89 @@ export class UpdateAutoMobileComponent {
     if (event.target.files && event.target.files.length) {
 
       const _files = event.target.files;
-      for (var x = 0; x < 7; x++) {
+
+      if (_files.length < 7) {
+        this.ErrMsg = "Must Upload 7 AD Images"
+      } else if (_files.length > 7) {
+        this.ErrMsg = "Only 7 AD Images Required."
+      }
+
+
+      for (var x = 0; x < _files.length; x++) {
 
         this.formData.append("ad_images[]", _files[x]);
         this.imageURLs.push(URL.createObjectURL(_files[x]));
       }
     }
   }
+
+
+
+  
+
+  getCanvaDesigns(): void {
+    this._canvaService.InitializeCanva();
+    
+    this._canvaService.getCanvaDesigns({ 
+      accessToken: window.sessionStorage.getItem('accessToken'),
+    }).subscribe((res: any) => {
+      this.Designs = res.items;
+    });
+
+  }
+
+  getCanvaDesign(id: String): void {
+    this._canvaService.InitializeCanva();
+
+    
+    this._canvaService.getCanvaDesign({ 
+      accessToken: window.sessionStorage.getItem('accessToken'),
+      designID: id,
+    }).subscribe((res: any) => {
+      
+    })
+
+  }
+
+  previewDesign(url: String): void {
+    this.PreviewURL = url;
+
+  }
+
+  async uploadDesign(url: String) {
+
+    const getUrlExtension = (url: any) => {
+      return url
+        .split(/[#?]/)[0]
+        .split(".")
+        .pop()
+        .trim();
+    }
+
+    const onImageEdit = async (imgUrl: any) => {
+      var imgExt = getUrlExtension(imgUrl);
+
+      const response = await fetch(imgUrl);
+      const blob = await response.blob();
+      const file = new File([blob], "adImage." + imgExt, {
+        type: blob.type,
+      });
+
+      this.adImages.push(file);
+    }
+
+    onImageEdit(url);
+  }
+
+  continueEditingOnCanva(url: String): void {
+    window.location.href = `${ url }`;
+
+  }
+
+  viewOnCanva(url: String): void {
+    window.location.href = `${ url }`;
+  }
+
 
   
 

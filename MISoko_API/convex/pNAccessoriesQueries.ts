@@ -19,6 +19,15 @@ export const getPNAccessories = query({
   }    
 });
 
+export const searchPNAccessories = query({
+  args: { searchTerm: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db.query('pNAccessories')
+        .withSearchIndex('name', (q) => q.search("name", args.searchTerm))
+        .collect()   
+  }    
+});
+
 export const getPNAccessoryById = query({
   handler: async (ctx, args: any) => {
     return await ctx.db
@@ -27,5 +36,16 @@ export const getPNAccessoryById = query({
       .collect()
   },
 });
+
+
+export const getSimilarPNAccessories = query({
+  args: { embeddings: v.array(v.float64()) },
+  handler: async (ctx, args) => {
+    return await ctx.db.query('pNAccessories')
+      .filter((q) => q.eq(q.field('embeddings'), args.embeddings))
+      .collect()
+  }
+});
+
 
 

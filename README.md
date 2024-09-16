@@ -4,7 +4,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development  server
 
-Run `cd ./MISoko_UX && npm run start` for a dev server. Navigate to `http://localhost:4201/`. The app will automatically reload if you change any of the source files.
+Run `cd ./MISoko_UX && npm run start` for a dev server. Navigate to `http://127.0.0.1:4201/`. The app will automatically reload if you change any of the source files.
+
+***make sure the client match the one set in the convex env variables, for CORS to work.***
+
+Configure API Endpoints in  `./MISoko_UX/src/environments/environment.dev.ts && ./MISoko_UX/src/environments/environment.prod.ts && ./MISoko_UX/src/environments/environment.ts`
 
 ## Code scaffolding
 
@@ -34,6 +38,4 @@ Follow [Convex development docs](https://docs.convex.dev/home) for configuration
 
 
 ## Authorization && Authentication
-
-Replace `./MISoko_UX/src/environments` values with your own as they are subject to change.
 

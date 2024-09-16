@@ -21,11 +21,11 @@ export class  SNIndustryService {
 
 
   newSNIndustry(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/sNIndustries/new`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/sNIndustries/new`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   updateSNIndustry(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/sNIndustries/update`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/sNIndustries/update`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   getAllSNIndustries(): Observable<any> {
@@ -38,6 +38,10 @@ export class  SNIndustryService {
 
   getSNIndustryByID(data: any): Observable<any> {
     return this._httpClient.post(`${ this._appService.APIEndpoint }/sNIndustry`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
+  }
+
+  getSimilarSNIndustries(data: any): Observable<any> {
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/sNIndustries/similar`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
  
 }

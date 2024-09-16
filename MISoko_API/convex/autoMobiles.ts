@@ -4,74 +4,31 @@ import { api, internal } from './_generated/api';
 
 
 export const newAutoMobile = httpAction(async (ctx, request) => {
-  let response;
-  await request.formData().then(async (data: any) => {
-
-     if (data.get('ad_images[]')) {
-      const ad_images = new Array();
-
-      for (let img of data.getAll('ad_images[]')) {
-        const blob_img = img as Blob;
-        const storageId = await ctx.storage.store(blob_img);
-        ad_images.push(await ctx.storage.getUrl(storageId));
-
-      }
+  const params = JSON.parse(await request.text());
 
       const autoMobile = {
-        created_by: data.get('created_by'),
-        make: data.get('make'),
-        model: data.get('model'),
-        chassis_number: data.get('chassis_number'),
-        category: data.get('category'),
-        engine: data.get('engine'),
-        yom: data.get('yom'),
-        transmission: data.get('transmission_data'),
-        body_color: data.get('body_color'),
-        interior: data.get('interior'),
-        key_features: data.get('key_features'),
-        description: data.get('description'),
-        video_link: data.get('video_link'),
-        ad_images: ad_images,
+        created_by: params['created_by'],
+        make: params['make'],
+        model: params['model'],
+        chassis_number: params['chassis_number'],
+        category: params['category'],
+        engine: params['engine'],
+        yom: params['yom'],
+        transmission: params['transmission_data'],
+        body_color: params['body_color'],
+        interior: params['interior'],
+        key_features: params['key_features'],
+        description: params['description'],
+        video_link: params['video_link'],
+        ad_images: params['ad_images'],
         published: true,
-        ad_phone_number: data.get('ad_phone_number'),
-        ad_email: data.get('ad_email'),
-        transaction_type: data.get('transaction_type'),
-        updated_at: new Date().toISOString(),
-        created_at: new Date().toISOString()
+        ad_phone_number: params['ad_phone_number'],
+        ad_email: params['ad_email'],
+        transaction_type: params['transaction_type'],
+        embeddings: await (ctx.runAction(api.misokoAIActions.generateEmbeddings, { content: params['description'] }))
       }
 
-      response = await ctx.runMutation(api.autoMobilesMutations.newAutoMobile, autoMobile);
-
-
-    } else {
-
-      const autoMobile = {
-        created_by: data.get('created_by'),
-        make: data.get('make'),
-        model: data.get('model'),
-        chassis_number: data.get('chassis_number'),
-        category: data.get('category'),
-        engine: data.get('engine'),
-        yom: data.get('yom'),
-        transmission: data.get('transmission_data'),
-        body_color: data.get('body_color'),
-        interior: data.get('interior'),
-        key_features: data.get('key_features'),
-        description: data.get('description'),
-        video_link: data.get('video_link'),
-        ad_images: ['No_Ad_Images'],
-        price_amount: data.get('price_amount'),
-        published: true,
-        ad_phone_number: data.get('ad_phone_number'),
-        ad_email: data.get('ad_email'),
-        transaction_type: data.get('transaction_type'),
-        updated_at: new Date().toISOString(),
-        created_at: new Date().toISOString()
-      }
-      response = await ctx.runMutation(api.autoMobilesMutations.newAutoMobile, autoMobile);
-
-    }
-  });
+      const response = await ctx.runMutation(api.autoMobilesMutations.newAutoMobile, autoMobile);
 
   return new Response(JSON.stringify(response), {
     headers: new Headers({
@@ -102,7 +59,6 @@ export const getAllAutoMobiles = httpAction(async (ctx, request) => {
 });
 
 export const getAutoMobiles = httpAction(async (ctx, request) => {
-
   const response = await ctx.runQuery(api.autoMobilesQueries.getAutoMobiles);
 
 
@@ -117,12 +73,30 @@ export const getAutoMobiles = httpAction(async (ctx, request) => {
   });
 });
 
+export const searchAutoMobiles = httpAction(async (ctx, request) => {
+  const params = JSON.parse(await request.text());
+  
+
+  const response = await ctx.runQuery(api.autoMobilesQueries.searchAutoMobiles, { searchTerm: params['searchTerm']});
+
+
+  return new Response(JSON.stringify(response), {
+    headers: {
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      Vary: 'origin',
+    },
+    status: 200,
+  });
+});
+
+
 
 export const getAutoMobileById = httpAction(async (ctx, request) => {
   const params = JSON.parse(await request.text());
 
   const response = await ctx.runQuery(api.autoMobilesQueries.getAutoMobileById, params);
-  console.log(response);
 
   return new Response(JSON.stringify(response), {
     headers: {
@@ -136,79 +110,36 @@ export const getAutoMobileById = httpAction(async (ctx, request) => {
 });
 
 export const updateAutoMobile = httpAction(async (ctx, request) => {
-  let response;
-  await request.formData().then(async (data: any) => {
+  const params = JSON.parse(await request.text());
 
-    if (data.get('ad_images[]')) {
-      const ad_images = new Array();
-
-      for (let img of data.getAll('ad_images[]')) {
-        const blob_img = img as Blob;
-        const storageId = await ctx.storage.store(blob_img);
-        ad_images.push(await ctx.storage.getUrl(storageId));
-
-      }
-
-
-      const AutoMobile = {
-        id: data.get('id'),
-        ccreated_by: data.get('created_by'),
-        make: data.get('make'),
-        model: data.get('model'),
-        chassis_number: data.get('chassis_number'),
-        category: data.get('category'),
-        engine: data.get('engine'),
-        yom: data.get('yom'),
-        transmission: data.get('transmission_data'),
-        body_color: data.get('body_color'),
-        interior: data.get('interior'),
-        key_features: data.get('key_features'),
-        description: data.get('description'),
-        video_link: data.get('video_link'),
-        ad_images: data.get('ad_image'),
-        price_amount: data.get('price_amount'),
-        location: data.get('location'),
+      const autoMobile = {
+        id: params['id'],
+        price_amount: params['price_amount'],   
+        location: params['location'],
+        created_by: params['created_by'],
+        make: params['make'],
+        model: params['model'],
+        chassis_number: params['chassis_number'],
+        category: params['category'],
+        engine: params['engine'],
+        yom: params['yom'],
+        transmission: params['transmission_data'],
+        body_color: params['body_color'],
+        interior: params['interior'],
+        key_features: params['key_features'],
+        description: params['description'],
+        video_link: params['video_link'],
+        ad_images: params['ad_images'],
         published: true,
-        ad_phone_number: data.get('ad_phone_number'),
-        transaction_type: data.get('transaction_type'),
-        ad_email: data.get('ad_email'),
-        created_at: new Date().toISOString()
+        ad_phone_number: params['ad_phone_number'],
+        ad_email: params['ad_email'],
+        transaction_type: params['transaction_type'],
+        embeddings: await (ctx.runAction(api.misokoAIActions.generateEmbeddings, { content: params['description'] }))
+        
       }
 
-      response = await ctx.runMutation(api.autoMobilesMutations.updateAutoMobile, AutoMobile);
+      const response = await ctx.runMutation(api.autoMobilesMutations.updateAutoMobile, autoMobile);
 
-
-    } else {
-
-      const AutoMobile = {
-        id: data.get('id'),
-        ccreated_by: data.get('created_by'),
-        make: data.get('make'),
-        model: data.get('model'),
-        chassis_number: data.get('chassis_number'),
-        category: data.get('category'),
-        engine: data.get('engine'),
-        yom: data.get('yom'),
-        transmission: data.get('transmission_data'),
-        body_color: data.get('body_color'),
-        interior: data.get('interior'),
-        key_features: data.get('key_features'),
-        description: data.get('description'),
-        video_link: data.get('video_link'),
-        ad_images: ['No-AD-Images'],
-        price_amount: data.get('price_amount'),
-        location: data.get('location'),
-        published: true,
-        ad_phone_number: data.get('ad_phone_number'),
-        transaction_type: data.get('transaction_type'),
-        ad_email: data.get('ad_email'),
-        created_at: new Date().toISOString()
-      }
-
-      response = await ctx.runMutation(api.autoMobilesMutations.updateAutoMobile, AutoMobile);
-
-    }
-  });
 
   return new Response(JSON.stringify(response), {
     headers: new Headers({
@@ -221,5 +152,25 @@ export const updateAutoMobile = httpAction(async (ctx, request) => {
     status: 200,
   });
 });
+
+
+export const getSimilarAutoMobiles = httpAction(async (ctx, request) => {
+  const params = JSON.parse(await request.text());
+ 
+  const embeddings = await ctx.runAction(api.misokoAIActions.generateEmbeddings, { content: params['query']});
+  const response = await ctx.runQuery(api.autoMobilesQueries.getSimilarAutoMobiles, { embeddings: embeddings });
+
+  return new Response(JSON.stringify(response), {
+    headers: new Headers({
+      'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+      'Access-Control-Allow-Methods': 'POST',
+      'Access-Control-Allow-Headers': 'Content-Type, Digest',
+      'Access-Control-Max-Age': '86400',
+      Vary: 'origin',
+    }),
+    status: 200,
+  });
+});
+
 
 

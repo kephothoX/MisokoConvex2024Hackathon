@@ -1,36 +1,76 @@
 <section class="container-fluid">
-  <mat-card class="mat-elevation-z8 card p-2 m-1" *ngIf="LNProperty" #lNProperty>
-    <div class="d-flex flex-column">
-      <div id="ADImagesCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
+  <mat-card class="mat-elevation-z8 card p-2 m-1" *ngIf="LNProperty" #pNAccessory>
+    <mat-card-title>
+      <h2 class="fs-2 text-primary">{{ LNProperty.name }}</h2>
+    </mat-card-title>
+    <mat-divider></mat-divider>
 
-          <div class="carousel-item active" *ngFor="let entry of LNProperty.ad_images">
-            <img src="{{  entry }}" alt="MISoko" class="object-fit-fill rounded mx-auto d-block img-fluid" />
-          </div>
-
+    <div class="card mat-elevation-z8">
+      <div class="row g-0 align-items-center">
+        <div class="col-md-4 mat-elevation-z4">
+          <video
+            class="d-block object-fit-lg-contain object-fit-md-contain object-fit-sm-contain img-fluid rounded-start"
+            controls>
+            <source src="{{ LNProperty.video_link }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <mat-divider></mat-divider>
         </div>
-        <button mat-icon-button class="carousel-control-prev text-accent" color="warn" data-bs-target="#ADImagesCarousel" data-bs-slide="prev">
-          <mat-icon class="material-symbols-outlined">arrow_back_ios</mat-icon>
-        </button>
-        <button mat-icon-button class="carousel-control-next text-accent" color="warn" data-bs-target="#ADImagesCarousel" data-bs-slide="next">
-          <mat-icon class="material-symbols-outlined">arrow_forward_ios</mat-icon>
-        </button>
+        <div class="col-md-8 mat-elevation-z4">
+          <div class="d-flex flex-column">
+            <div id="ADImagesCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+              <div class="carousel-inner">
+
+                <span class="carousel-item active" data-bs-interval="10000">
+                  <img src="{{  LNProperty.ad_images[1] }}" alt="MISoko"
+                    class="object-fit-fill rounded mx-auto d-block img-fluid" />
+                </span>
+
+                <div class="carousel-item" *ngFor="let entry of LNProperty.ad_images" data-bs-interval="20000">
+                  <img src="{{  entry }}" alt="MISoko" class="object-fit-fill rounded mx-auto d-block img-fluid" />
+                </div>
+
+              </div>
+              <button mat-icon-button class="carousel-control-prev text-accent" color="warn"
+                data-bs-target="#ADImagesCarousel" data-bs-slide="prev">
+                <mat-icon class="material-symbols-outlined">arrow_back_ios</mat-icon>
+              </button>
+              <button mat-icon-button class="carousel-control-next text-accent" color="warn"
+                data-bs-target="#ADImagesCarousel" data-bs-slide="next">
+                <mat-icon class="material-symbols-outlined">arrow_forward_ios</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="card-body">
-      <h2 class="card-title">{{ LNProperty.name }}</h2>
+    <mat-divider></mat-divider>
+    <div class="card-body mat-elevation-z6">
+      <h2 class="fs-2 card-title text-accent">{{ LNProperty.name }} Description</h2>
       <p class="card-text">{{ LNProperty.description }}</p>
     </div>
+    <mat-divider></mat-divider>
+
     <ul class="list-group list-group-flush">
-      <li class="list-group-item"><h3 class="fs-3 text-accent">{{ LNProperty.price_amount | currency }}</h3></li>
-      <li class="list-group-item"><h5 class="fs-5 text-black">{{ LNProperty.location }}</h5></li>
+      <li class="list-group-item">
+        <h3 class="fs-3 text-accent">
+          <span class="fs-6 text-black">Price </span>
+          {{ LNProperty.price_amount | currency }}
+        </h3>
+      </li>
+      <li class="list-group-item">
+        <h5 class="fs-5 text-tertiary">
+          <span class="fs-6 text-black">Location</span>
+          {{ LNProperty.location }}
+        </h5>
+      </li>
     </ul>
     <div class="card-body">
 
       <a href="phone:{{ LNProperty.ad_phone_number}}" class="card-link">
         <button mat-raised-button color="primary">
-          <mat-icon class="material-symbols-outlined">dial</mat-icon>
+          <mat-icon class="material-symbols-outlined">call</mat-icon>
           {{ LNProperty.ad_phone_number }}
         </button>
       </a>
@@ -42,11 +82,154 @@
         </button>
       </a>
     </div>
+    <!--<mat-card-footer>
+      <button mat-mini-fab color="primary" class="text-white">
+        <mat-icon class="material-symbols-outlined">visibility</mat-icon>
+        <span class="text-white"></span>
+      </button>
+    </mat-card-footer> -->
   </mat-card>
+  <!-- <mat-accordion class="accordion" *ngIf="LNProperty">
+    <mat-expansion-panel *ngIf="AdComments">
+      <mat-expansion-panel-header class="accordion-item">
+        <mat-panel-title>
+          Comments
+        </mat-panel-title>
+        <mat-panel-description>
+          View Comments
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card *ngFor="let entry of AdComments" class="accordion-item">
+        <mat-card-content>
+           <div>
+                <button mat-icon-button color="accent" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="getProfile(entry.created_by)">
+                  <mat-icon class="material-symbols-outlined">person</mat-icon>
+                </button>
+
+                
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content" *ngIf="CommentUserProfile">
+                      <div class="modal-header">
+                        <img src="{{ CommentUserProfile.profile_thumbnail}}" class="profile-pic img-thumbnail" alt="User Profile"/>
+                        <button mat-mini-fab color="warn" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close" align="end">
+                          <mat-icon class="material-symbols-outlined">close</mat-icon>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <h2 class="modal-title fs-2" id="exampleModalLabel">{{ CommentUserProfile.username }}</h2>
+                        <h3>Bio:  <span class="fw-semibold fs-6 text-primary">{{ CommentUserProfile.about }}</span></h3>
+                        <h3>Hobbies:  <span class="fw-semibold fs-6 text-primary">{{ CommentUserProfile.hobbies }}</span></h3>
+                        <h3>interests: <span class="fw-semibold fs-6 text-primary">{{ CommentUserProfile.interests }}</span></h3>
+                      </div>
+                      <div class="modal-footer">
+                        <button mat-raised-button color="warn" class="btn-close text-white" data-bs-dismiss="modal" align="end">
+                          <mat-icon class="material-symbols-outlined">close</mat-icon>
+                            Close
+                          </button>
+                        </div>
+                    </div>
+                    <div class="modal-content" *ngIf="!CommentUserProfile">
+                      <mat-progress-bar color="accent" mode="buffer"></mat-progress-bar>
+                      <p>Fetching User</p>
+                    </div>
+                  </div>
+                </div>
+                <small class="p-1" *ngIf="CommentUserProfile">Posted By: {{ CommentUserProfile.username }} </small>
+                <small class="p-1 fw-bold">Created At: {{ entry.created_at | date }} </small>
+              </div>
+          <p class="fw-medium">{{ entry.comment }}</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          New Comment
+        </mat-panel-title>
+        <mat-panel-description>
+          Add Comment
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card>
+        <mat-card-header class="centered">
+          <mat-card-title class="centered">
+            <h2>New Comment</h2>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <form [formGroup]="newAdCommentForm" class="mat-elevation-z4 centered form col">
+
+            <input type="hidden" formControlName="ad_id" [(ngModel)]="LNProperty._id">
+            <mat-form-field appearance="fill" class="form-control p-1">
+              <mat-label>Comment</mat-label>
+              <mat-hint align="end"></mat-hint>
+              <mat-icon matPrefix class="material-symbols-outlined">info</mat-icon>
+              <input matInput cdkScrollable formControlName="comment" placeholder="Add Comment">
+            </mat-form-field>
+            <div class="spacer"></div>
+          </form>
+
+          <mat-card-actions class="align-buttons-center">
+            <button type="submit" mat-raised-button [disabled]="!newAdCommentForm.valid" (click)="onSubmitAdComment()">
+              <mat-icon class="material-symbols-outlined">send</mat-icon>
+              Comment
+            </button>
+
+            <button type="reset" mat-raised-button color="warn" class="text-white" (click)="resetAdCommentForm()">
+              <mat-icon class="material-symbols-outlined">cancel</mat-icon>
+              Clear
+            </button>
+          </mat-card-actions>
+        </mat-card-content>
+      </mat-card>
+    </mat-expansion-panel>
+  </mat-accordion> -->
 
   <mat-card *ngIf="!LNProperty">
     <mat-progress-bar mode="buffer" color="primary"></mat-progress-bar>
-    <h2>Loading Electrical and Appliance.....</h2>
+    <h2>Loading Land & Properties.....</h2>
   </mat-card>
+
+<mat-card class="container-fluid" *ngIf="LNProperties">
+  <mat-card-title>
+    <h2 class="fs-2 text-accent">
+      Similar Land & Properties ADs
+    </h2>
+  </mat-card-title>
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="mat-elevation-z8 card-group flex-row" *ngIf="LNProperties">
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <mat-card class="mat-elevation-z6 card m-2" *ngFor="let entry of LNProperties">
+          <mat-card-header>
+            <h3 class="fs-3 align-center">{{ entry.name }}</h3>
+          </mat-card-header>
+          <mat-card-content>
+
+            <a routerLink="/lNProperties/view/{{ entry._id}}">
+              <div class="col d-flex flex-row">
+                <img src="{{  entry.ad_images[1] }}" alt="MISoko"
+                  class="card-img-top img-thumbnail object-fit-fill rounded mx-auto d-block card-img-top" />
+
+              </div>
+            </a>
+
+            <div class="card-footer">
+              <p class="card-text article text-accent">{{ entry.price_amount | currency }}</p>
+            </div>
+
+            <div class="card-footer">
+              <p class="card-text article text-accent">{{ entry.location }}</p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+</mat-card>
 
 </section>

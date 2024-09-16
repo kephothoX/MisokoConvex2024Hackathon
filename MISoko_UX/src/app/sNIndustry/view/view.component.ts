@@ -11,6 +11,7 @@ import { SNIndustry } from '../sNIndustry';
 })
 export class ViewComponent  implements OnInit {
   SNIndustry?: SNIndustry;
+  SNIndustries?: SNIndustry[];
 
   constructor (
     private _sNIndustryService: SNIndustryService,
@@ -19,8 +20,11 @@ export class ViewComponent  implements OnInit {
 
   ngOnInit(): void {    
     this._sNIndustryService.getSNIndustryByID({ id: this._activatedRoute.snapshot.params['id'] }).subscribe((response: any) => {
-      this.SNIndustry = response[0];
 
+      this.SNIndustry = response[0];
+      this._sNIndustryService.getSimilarSNIndustries({ query: response[0].description }).subscribe((res: any) => {
+        this.SNIndustries = res;
+      });
     });
    }
 

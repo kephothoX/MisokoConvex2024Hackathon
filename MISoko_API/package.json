@@ -17,16 +17,14 @@
   "license": "MIT",
   "dependencies": {
     "@auth/core": "^0.34.2",
-    "@convex-dev/auth": "^0.0.47",
-    "@google/generative-ai": "^0.15.0",
-    "axios": "^1.7.2",
-    "busboy": "^1.6.0",
-    "convex": "^1.13.2",
-    "dotenv": "^16.4.5",
-    "hono": "^4.5.1"
+    "@convex-dev/auth": "^0.0.61",
+    "@google/generative-ai": "^0.17.1",
+    "axios": "^1.7.7",
+    "convex": "^1.15.0",
+    "convex-helpers": "^0.1.52",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
-    "@types/busboy": "^1.5.4",
     "@types/node": "^20.14.11",
     "typescript": "5.5.3"
   }

@@ -26,3 +26,27 @@ export const getLNPropertyById = query({
       .collect()
   },
 });
+
+
+export const searchLNProperties = query({
+  args: { searchTerm: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db.query('lNProperties')
+        .withSearchIndex('name', (q) => q.search("name", args.searchTerm))
+        .collect()   
+  }    
+});
+
+
+export const getSimilarLNProperties = query({
+  args: { embeddings: v.array(v.float64()) },
+  handler: async (ctx, args) => {
+    return await ctx.db.query('lNProperties')
+      .filter((q) => q.eq(q.field('embeddings'), args.embeddings))
+      .collect()
+  }
+});
+
+
+
+

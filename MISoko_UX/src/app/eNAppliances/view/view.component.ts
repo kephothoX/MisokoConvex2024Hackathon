@@ -11,6 +11,7 @@ import { ENAppliance } from '../eNAppliance';
 })
 export class ViewComponent  implements OnInit {
   ENAppliance?: ENAppliance;
+  ENAppliances?: ENAppliance[];
 
   constructor (
     private _eNAppliancesService: ENAppliancesService,
@@ -19,10 +20,11 @@ export class ViewComponent  implements OnInit {
 
   ngOnInit(): void {    
     this._eNAppliancesService.getENApplianceByID({ id: this._activatedRoute.snapshot.params['id'] }).subscribe((response: any) => {
-      console.log(response);
-
+      
       this.ENAppliance = response[0];
-      console.log(this.ENAppliance);
+      this._eNAppliancesService.getSimilarENAppliances({ query: response[0].description }).subscribe((res: any) => {
+        this.ENAppliances = res;
+      });
     })
    }
 

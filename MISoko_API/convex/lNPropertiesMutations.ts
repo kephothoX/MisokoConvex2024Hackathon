@@ -4,8 +4,6 @@ import { v } from 'convex/values';
 
 export const newLNProperty = mutation({
   handler: async(ctx, args: any) => {
-    console.log(args);
-
     
     return await ctx.db.insert('lNProperties',  args);
   }
@@ -24,8 +22,7 @@ export const updateLNProperty = mutation({
         ad_email: v.string(),
         ad_images: v.array(v.string()),
         location: v.string(),
-        created_at: v.optional(v.string()),
-        updated_at: v.optional(v.string()),
+        embeddings: v.array(v.float64())
     },
 
     handler: async (ctx, args) => {
@@ -42,8 +39,7 @@ export const updateLNProperty = mutation({
             ad_email: args.ad_email,
             ad_images: args.ad_images,
             location: args.location,
-            created_at: args.created_at,
-            updated_at: args.updated_at,
+            embeddings: args.embeddings
         });
 
     },

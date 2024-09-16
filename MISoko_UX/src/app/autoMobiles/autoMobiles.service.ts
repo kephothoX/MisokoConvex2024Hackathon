@@ -23,11 +23,11 @@ export class AutoMobilesService {
 
 
   newAutoMobile(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/autoMobiles/new`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/autoMobiles/new`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   updateAutoMobile(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/autoMobiles/update`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/autoMobiles/update`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   getAllAutoMobiles(): Observable<any> {
@@ -42,5 +42,9 @@ export class AutoMobilesService {
     return this._httpClient.post(`${ this._appService.APIEndpoint }/autoMobile`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
+
+  getSimilarAutoMobiles(data: any): Observable<any> {
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/autoMobiles/similar`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
+  }
   
 }

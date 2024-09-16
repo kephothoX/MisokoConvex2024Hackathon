@@ -226,7 +226,7 @@ export const getCanvaAssets = httpAction(async (ctx, request) => {
 
 export const createNewCanvaFolder = httpAction(async (ctx, request) => {
   const params = JSON.parse(await request.text());
-  console.log(params);
+  
   
   const result = await ctx.runAction(api.canvaActions.createNewCanvaFolder, params);
 
@@ -247,7 +247,7 @@ export const createNewCanvaFolder = httpAction(async (ctx, request) => {
 
 export const getCanvaFolders = httpAction(async (ctx, request) => {
   const params = JSON.parse(await request.text());
-  console.log(params);
+  
   
   const result = await ctx.runQuery(api.canvaQueries.getCanvaFolders, params );
 
@@ -285,7 +285,7 @@ export const getCanvaFolder = httpAction(async (ctx, request) => {
 
 export const getCanvaFolderItems = httpAction(async (ctx, request) => {
   const params = JSON.parse(await request.text());
-  console.log(params);
+  
   
   const result = await ctx.runAction(api.canvaActions.getCanvaFolderItems, params );
 
@@ -306,7 +306,7 @@ export const getCanvaFolderItems = httpAction(async (ctx, request) => {
 
 export const updateCanvaFolder = httpAction(async (ctx, request) => {
   const params = JSON.parse(await request.text());
-  console.log(params);
+  
   
   const result = await ctx.runAction(api.canvaActions.updateCanvaFolder, params );
 

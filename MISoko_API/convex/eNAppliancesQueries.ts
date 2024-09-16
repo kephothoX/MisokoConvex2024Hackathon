@@ -29,4 +29,23 @@ export const getENApplianceById = query({
 });
 
 
+export const searchENAppliances = query({
+  args: { searchTerm: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db.query('eNAppliances')
+        .withSearchIndex('name', (q) => q.search("name", args.searchTerm))
+        .collect()   
+  }    
+});
+
+export const getSimilarENAppliances = query({
+  args: { embeddings: v.array(v.float64()) },
+  handler: async (ctx, args) => {
+    return await ctx.db.query('eNAppliances')
+      .filter((q) => q.eq(q.field('embeddings'), args.embeddings))
+      .collect()
+  }
+});
+
+
 

@@ -21,11 +21,11 @@ export class  ENAppliancesService {
 
 
   newENAppliance(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/eNAppliances/new`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/eNAppliances/new`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   updateENAppliance(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/eNAppliances/update`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/eNAppliances/update`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   getAllENAppliances(): Observable<any> {
@@ -38,6 +38,10 @@ export class  ENAppliancesService {
 
   getENApplianceByID(data: any): Observable<any> {
     return this._httpClient.post(`${ this._appService.APIEndpoint }/eNAppliance`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
+  }
+
+  getSimilarENAppliances(data: any): Observable<any> {
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/eNAppliances/similar`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
  
 }

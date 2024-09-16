@@ -1,15 +1,30 @@
 import { httpRouter } from 'convex/server';
-
+import { httpAction } from './_generated/server';
 import { 
   auth,
-  githubCallback
+  signIn
+  //githubCallback
 } from './auth';
+
+import {
+  getUserByEmail,
+  getUser,
+  updateUser,
+  ifUserAuthenticated
+} from './users';
+
+import {
+  generativeAIContent
+} from './misokoAI';
 
 import {
   newAutoMobile,
   getAllAutoMobiles,
   getAutoMobileById,
-  getAutoMobiles
+  getAutoMobiles,
+  searchAutoMobiles,
+  updateAutoMobile,
+  getSimilarAutoMobiles
 } from './autoMobiles';
 
 
@@ -17,14 +32,20 @@ import {
   newENAppliance,
   getAllENAppliances,
   getENApplianceById,
-  getENAppliances
+  getENAppliances,
+  searchENAppliances,
+  updateENAppliance,
+  getSimilarENAppliances
 } from './eNAppliances';
 
 import {
   newPNAccessory,
   getAllPNAccessories,
   getPNAccessoryById,
-  getPNAccessories
+  getPNAccessories,
+  searchPNAccessories,
+  updatePNAccessory,
+  getSimilarPNAccessories
 } from './pNAccessories';
 
 
@@ -32,14 +53,20 @@ import {
   newLNProperty,
   getAllLNProperties,
   getLNPropertyById,
-  getLNProperties
+  getLNProperties,
+  searchLNProperties,
+  updateLNProperty,
+  getSimilarLNProperties
 } from './lNProperties';
 
 import {
   newSNIndustry,
   getAllSNIndustries,
   getSNIndustryById,
-  getSNIndustries
+  getSNIndustries,
+  searchSNIndustries,
+  updateSNIndustry,
+  getSimilarSNIndustries
 } from './sNIndustries';
 
 import { 
@@ -68,48 +95,128 @@ import {
 
 } from './canva';
 
+import {
+  newAdComment,
+  getCommentsPerAd
+} from './adComments';
+
+import {
+  UploadFile,
+  UploadFiles,
+  newAdView,
+  countAdViews,
+} from './misoko';
+
 const http = httpRouter();
 
-auth.addHttpRoutes(http);
+http.route({
+  path: '/api/ad/view',
+  method: 'POST',
+  handler: newAdView
+});
 
 http.route({
-  path: '/api/auth-url',
+  path: '/api/ad/views/count',
+  method: 'POST',
+  handler: countAdViews
+});
+
+http.route({
+  path: '/api/file/upload',
+  method: 'POST',
+  handler: UploadFile
+});
+
+
+http.route({
+  path: '/api/files/upload',
+  method: 'POST',
+  handler: UploadFiles
+});
+
+http.route({
+  path: '/api/users/email',
+  method: 'POST',
+  handler: getUserByEmail
+});
+
+http.route({
+  path: '/api/user',
+  method: 'POST',
+  handler: getUser
+});
+
+http.route({
+  path: '/api/users/update',
+  method: 'POST',
+  handler: updateUser
+});
+
+http.route({
+  path: '/api/users/auth',
+  method: 'POST',
+  handler: ifUserAuthenticated
+});
+
+
+http.route({
+  path: '/api/ai/content',
+  method: 'POST',
+  handler: generativeAIContent
+});
+
+
+http.route({
+  path: '/api/ads/comments/new',
+  method: 'POST',
+  handler: newAdComment
+});
+
+http.route({
+  path: '/api/ads/comments',
+  method: 'POST',
+  handler: getCommentsPerAd
+});
+
+
+http.route({
+  path: '/api/canva/auth',
   method: 'GET',
   handler: genAuthURL
 });
 
 http.route({
-  path: '/api/refresh-token',
+  path: '/api/canva/refreshToken',
   method: 'POST',
   handler: genRefreshToken
 });
 
 http.route({
-  path: '/api/access-token',
+  path: '/api/canva/accessToken',
   method: 'POST',
   handler: genAccessToken
 });
 
 http.route({
-  path: '/api/inspect-access-token',
+  path: '/api/canva/inspect/accessToken',
   method: 'POST',
   handler: inspectAccessToken
 });
 
 http.route({
-  path: '/api/revoke-refresh-token',
+  path: '/api/canva/revoke/refreshToken',
   method: 'POST',
   handler: revokeRefreshToken
 });
 
 http.route({
-  path: '/api/get-user-profile',
+  path: '/api/canva/user/profile',
   method: 'POST',
   handler: getUserProfile
 });
 
 http.route({
-  path: '/api/get-user-id',
+  path: '/api/canva/user/id',
   method: 'POST',
   handler: getUserID
 });
@@ -215,7 +322,13 @@ http.route({
 });
 
 http.route({
-  path: '/api/autoMobile',
+  path: '/api/autoMobiles/update',
+  method: 'POST',
+  handler: updateAutoMobile
+});
+
+http.route({
+  path: '/api/autoMobiles',
   method: 'GET',
   handler: getAllAutoMobiles
 });
@@ -224,6 +337,19 @@ http.route({
   path: '/api/autoMobiles/5',
   method: 'GET',
   handler: getAutoMobiles
+});
+
+
+http.route({
+  path: '/api/autoMobiles/search',
+  method: 'POST',
+  handler: searchAutoMobiles
+});
+
+http.route({
+  path: '/api/autoMobiles/similar',
+  method: 'POST',
+  handler: getSimilarAutoMobiles
 });
 
 http.route({
@@ -240,10 +366,29 @@ http.route({
 });
 
 http.route({
+  path: '/api/eNAppliances/update',
+  method: 'POST',
+  handler: updateENAppliance
+});
+
+http.route({
   path: '/api/eNAppliances',
   method: 'GET',
   handler: getAllENAppliances
 });
+
+http.route({
+  path: '/api/eNAppliances/search',
+  method: 'POST',
+  handler: searchENAppliances
+});
+
+http.route({
+  path: '/api/eNAppliances/similar',
+  method: 'POST',
+  handler: getSimilarENAppliances
+});
+
 
 http.route({
   path: '/api/eNAppliances/5',
@@ -265,9 +410,27 @@ http.route({
 });
 
 http.route({
+  path: '/api/sNIndustries/update',
+  method: 'POST',
+  handler: updateSNIndustry
+});
+
+http.route({
   path: '/api/sNIndustries',
   method: 'GET',
   handler: getAllSNIndustries
+});
+
+http.route({
+  path: '/api/sNIndustries/search',
+  method: 'POST',
+  handler: searchSNIndustries
+});
+
+http.route({
+  path: '/api/sNIndustries/similar',
+  method: 'POST',
+  handler: getSimilarSNIndustries
 });
 
 http.route({
@@ -290,6 +453,12 @@ http.route({
 });
 
 http.route({
+  path: '/api/pNAccessories/update',
+  method: 'POST',
+  handler: updatePNAccessory
+});
+
+http.route({
   path: '/api/pNAccessories',
   method: 'GET',
   handler: getAllPNAccessories
@@ -299,6 +468,18 @@ http.route({
   path: '/api/pNAccessories/5',
   method: 'GET',
   handler: getPNAccessories
+});
+
+http.route({
+  path: '/api/pNAccessories/search',
+  method: 'POST',
+  handler: searchPNAccessories
+});
+
+http.route({
+  path: '/api/pNAccessories/similar',
+  method: 'POST',
+  handler: getSimilarPNAccessories
 });
 
 http.route({
@@ -315,6 +496,12 @@ http.route({
 });
 
 http.route({
+  path: '/api/lNProperties/update',
+  method: 'POST',
+  handler: updateLNProperty
+});
+
+http.route({
   path: '/api/lNProperties',
   method: 'GET',
   handler: getAllLNProperties
@@ -327,11 +514,43 @@ http.route({
 });
 
 http.route({
+  path: '/api/lNProperties/search',
+  method: 'POST',
+  handler: searchLNProperties
+});
+
+http.route({
+  path: '/api/lNProperties/similar',
+  method: 'POST',
+  handler: getSimilarLNProperties
+});
+
+http.route({
   path: '/api/lNProperty',
   method: 'POST',
   handler: getLNPropertyById
 });
 
+
+auth.addHttpRoutes(http);
+
+http.route({
+  path: '/api/auth/signin',
+  method: 'POST',
+  handler:  httpAction(async (ctx, request) => {
+    const params = JSON.parse(await request.text());
+
+    return new Response(JSON.stringify( await signIn(ctx, params )), {
+        headers: {
+            'Access-Control-Allow-Origin': process.env.CLIENT_ORIGIN!,
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type',   
+            Vary: 'origin',
+        },
+        status: 200,
+    });
+  })
+});
 
 
 

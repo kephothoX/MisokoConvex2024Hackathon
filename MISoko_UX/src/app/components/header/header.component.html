@@ -1,10 +1,18 @@
-<nav class="mat-elevation-z8 mb-1">
+<nav class="mat-elevation-z8">
   <mat-toolbar class="mat-elevation-z6">
     <mat-toolbar-row color="primary" class="bg-whiter" style="justify-content: flex-end !important;">
-      <button mat-icon-button [matMenuTriggerFor]="menu" class="bg-whiter text-primary" id="apps">
+      <button mat-button [matMenuTriggerFor]="menu" class="bg-whiter text-primary" id="apps">
         <mat-icon class="material-symbols-outlined">apps</mat-icon>
+        <h2 class="pr-2 text-ks">MISoko</h2>
       </button>
-      <h2 class="pr-2 text-ks">MISoko</h2>
+
+       <a routerLink="/authn" class="text-black ml-2">
+          <button mat-menu-item color="accent">
+            <mat-icon class="material-symbols-icon text-accent">key</mat-icon>
+            <span class="fs-5 text-black">SignIn/Up</span>
+          </button>
+        </a>
+
       <mat-menu #menu="matMenu">
         <a routerLink="/home">
           <button mat-menu-item>
@@ -31,64 +39,25 @@
         </button>
 
         <mat-menu #accounts="matMenu">
-          <a routerLink="/profile/new" *ngIf="accountEmail">
-            <button mat-menu-item>
-              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
-              New Profile
-            </button>
-          </a>
-
-          <mat-divider></mat-divider>
-
-          <a routerLink="/preferences" *ngIf="accountEmail">
-            <button mat-menu-item>
-              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
-              My Content Preferences
-            </button>
-          </a>
-
-          <mat-divider></mat-divider>
-
-          <a routerLink="/profile/new" *ngIf="accountEmail">
-            <button mat-menu-item>
-              <mat-icon class="material-symbols-outlined">add_circle</mat-icon>
-              New Profile
-            </button>
-          </a>
-
-          <mat-divider></mat-divider>
-
-          <a routerLink="/profile/edit/{{ profileId }}" *ngIf="accountEmail">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="updateUser()">
               <mat-icon class="material-symbols-outlined">edit_circle</mat-icon>
               Edit Profile
             </button>
-          </a>
+          
 
           <mat-divider></mat-divider>
 
-          <button mat-menu-item *ngIf="accountEmail">
+          <button mat-menu-item *ngIf="User">
             <mat-icon class="material-symbols-outlined">lock</mat-icon>
             Logout
           </button>
 
         </mat-menu>
         <mat-divider></mat-divider>
+        
 
-
-        <mat-divider></mat-divider>
-
-        <a routerLink="/my-content" *ngIf="accountEmail">
-          <button mat-menu-item>
-            <mat-icon class="material-symbols-outlined">edit_document</mat-icon>
-            My Content
-          </button>
-        </a>
-
-        <mat-divider></mat-divider>
-
-        <h4 class="pr-3" *ngIf="accountEmail">Logged in as: <span class="text-warn">{{ accountEmail }}</span></h4>
-        <h4 class="pr-3" *ngIf="!accountEmail">Not Logged in. <a routerLink="/personal/auth/signin">Login to
+        <h4 class="pr-3" *ngIf="User">Logged in as: <span class="text-warn">{{ Email }}</span></h4>
+        <h4 class="pr-3" *ngIf="!User">Not Logged in. <a routerLink="/authn">Login to
             Continue</a></h4>
 
         <mat-divider></mat-divider>
@@ -97,7 +66,7 @@
       <div>
 
         <button mat-menu-item color="accent" [matMenuTriggerFor]="ADsLinks">
-          <mat-icon class="material-symbols-outlined">add</mat-icon>
+          <mat-icon class="material-symbols-outlined text-accent">add</mat-icon>
           Post AD
         </button>
 
@@ -151,7 +120,7 @@
 
     <mat-toolbar-row color="accent" class="mat-elevation-z4 text-white display-flex mb-2 bg-accent"
       style="justify-content: flex-end !important;">
-      <div>
+      <div class="container">
         <a routerLink="/lNProperties" class="text-white">
           <span class="p-1 m-1">Land & Properties </span>
         </a>

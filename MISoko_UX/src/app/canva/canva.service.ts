@@ -28,7 +28,7 @@ export class CanvaService {
 
   InitializeCanva(): void {
     if (window.sessionStorage.getItem('refreshToken') == 'undefined' || window.sessionStorage.getItem('refreshToken') == null || window.sessionStorage.getItem('refreshToken') == undefined) {
-      this._router.navigate(['/authn/signin']);
+      this._router.navigate(['/authn/canva/signin']);
 
     } else {
       this._authnService.inspectAccessToken({ accessToken: window.sessionStorage.getItem('accessToken') }).subscribe((response: any) => {
@@ -37,7 +37,7 @@ export class CanvaService {
           this._authnService.genAccessToken({ refreshToken: window.sessionStorage.getItem('accessToken') }).subscribe((res: any) => {
 
             if (res == null || res == undefined) {
-              this._router.navigate(['authn/signin']);
+              this._router.navigate(['authn/canva/signin']);
             } else {
               window.sessionStorage.setItem('accessToken', res.access_token);
               window.sessionStorage.setItem('refreshToken', res.refresh_token);
@@ -73,11 +73,11 @@ export class CanvaService {
 
 
   getUserID(data: Object): Observable<any> {
-    return this._httpClient.post(`${this._appService.APIEndpoint}/get-user-id`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${this._appService.APIEndpoint}/canva/user`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   getUserProfile(data: Object): Observable<any> {
-    return this._httpClient.post(`${this._appService.APIEndpoint}/get-user-profile`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${this._appService.APIEndpoint}/canva/user/profile`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
 

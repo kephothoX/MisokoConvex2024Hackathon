@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { environment } from 'src/environments/environment.prod';
+import { HttpClient } from '@angular/common/http';
 
 import { ErrorService } from '../error/error.service';
 import { Observable, catchError, of} from 'rxjs';
@@ -21,11 +19,11 @@ export class  PNAccessoriesService {
 
 
   newPNAccessory(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/pNAccessories/new`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/pNAccessories/new`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   updatePNAccessory(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/pNAccessories/update`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/pNAccessories/update`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   getAllPNAccessories(): Observable<any> {
@@ -38,6 +36,10 @@ export class  PNAccessoriesService {
 
   getPNAccessoryByID(data: any): Observable<any> {
     return this._httpClient.post(`${ this._appService.APIEndpoint }/pNAccessory`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
+  }
+
+  getSimilarPNAccessories(data: any): Observable<any> {
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/pNAccessories/similar`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
  
 }

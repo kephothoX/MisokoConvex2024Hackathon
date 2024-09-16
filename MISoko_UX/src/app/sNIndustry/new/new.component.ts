@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Design } from 'src/app/canva/canva';
 import { CanvaService } from 'src/app/canva/canva.service';
+import { AppService } from 'src/app/app.service';
 
 import { SNIndustryService } from '../sNIndustry.service'; 
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -15,8 +16,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class NewComponent implements OnInit {
   formData = new FormData();
+  AIResponse?: string;
   imageURLs = new Array();
   adImages = new Array();
+  AdImages = new Array();
+  VideoURL: any;
+  ADVideo: any;
+  DisableFileUploadForm: boolean = true;
+  VideoStorageID: any;
+
 
   Designs?: Design[];
   PreviewURL: any;
@@ -36,6 +44,7 @@ export class NewComponent implements OnInit {
   constructor (
     private _formBuilder: FormBuilder,
     private _sNIndustryService: SNIndustryService,
+    private _appService: AppService,
     private _canvaService: CanvaService,
     private _router: Router,
     public _matSnackBar: MatSnackBar
@@ -58,32 +67,66 @@ export class NewComponent implements OnInit {
   });
 
 
-  ngOnSubmit() {
+  ngOnSubmit(): void{
     const formValues = this.newSNIndustryForm.value;
-
-
-    this.formData.append('name', `${ formValues.name }`);
-    this.formData.append('description', `${ formValues.description }`);
-    this.formData.append('type', `${ formValues.type }`);
-    this.formData.append('price_amount', `${ formValues.price_amount }`);
-    this.formData.append('video_link', `${ formValues.video_link }`);
-    this.formData.append('created_by', `${ window.sessionStorage.getItem('canvaUserID') }`);
-    this.formData.append('location', `${ formValues.location }`);
-    this.formData.append('ad_phone_number', `${ formValues.ad_phone_number }`);
-    this.formData.append('ad_email', `${ formValues.ad_email }`);
-
-    for (var x = 0; x < this.adImages.length; x++) {
-
-        this.formData.append("ad_images[]", this.adImages[x]);
-        this.imageURLs.push(URL.createObjectURL(this.adImages[x]));
+    const ADImages = new Array();
+    for (let x = 0; x < this.AdImages.length; x++) {
+      this._appService.uploadFile(this.AdImages[x]).subscribe((response: any) => {
+        if (response.fileStorageID != null || undefined) {
+          ADImages.push(response.fileURL);
+        }
+      });
     }
+    this._appService.uploadFile(this.ADVideo).subscribe((response: any) => {
+      this.VideoStorageID = response.fileStorageID;
 
-    this._sNIndustryService.newSNIndustry(this.formData).subscribe((response: any) => {
-      if(response != null || response != undefined ) {
-        this._matSnackBar.open(`AD with id ${ response } cerated Successfully`, 'Dismiss');
+      if (response.fileStorageID != null || undefined) {
+
+        const sNIndustry = {
+          name: `${formValues.name}`,
+          description: `${formValues.description}`,
+          type: `${formValues.type}`,
+          price_amount: `${formValues.price_amount}`,
+          video_link: `${response.fileURL}`,
+          ad_images: ADImages,
+          created_by: `${window.sessionStorage.getItem('email')}`,
+          location: `${formValues.location}`,
+          ad_phone_number: `${formValues.ad_phone_number}`,
+          ad_email: `${formValues.ad_email}`,
+        }
+
+
+        this._sNIndustryService.newSNIndustry(sNIndustry).subscribe((response: any) => {
+          alert('Dont Reload. Wait  As We Save AD. We Got You.......');
+          if (response != null || response != undefined) {
+            this._matSnackBar.open(`AD with id ${response} cerated Successfully`, 'Dismiss');
+
+            if (response) {
+              this._router.navigate([`/sNIndustries/view/${response}`])
+            }
+          }
+        });
       }
     });
- 
+
+  }
+
+  
+  onVideoUpload(event: any) {
+    if (event.target.files && event.target.files.length) {
+
+      const file = event.target.files[0];
+
+      if (file.size > 5240000) {
+        this._matSnackBar.open('File too big. Must be less than 5MB', 'Dismiss');
+        this.DisableFileUploadForm = true;
+
+      } else {
+        this.DisableFileUploadForm = false;
+        this.ADVideo = new Blob([file],  { type: `${ file.type }`});
+        this.VideoURL = URL.createObjectURL(file);
+      }      
+    }
   }
 
   onFileChange(event: any) {
@@ -99,11 +142,15 @@ export class NewComponent implements OnInit {
 
 
       for (var x = 0; x < _files.length; x++) {
-
-        this.formData.append("ad_images[]", _files[x]);
+        this.AdImages.push( new Blob([_files[x]],  { type: `${ _files[x].type }`}));
         this.imageURLs.push(URL.createObjectURL(_files[x]));
       }
     }
+  }
+
+  removeAdImages(): void {
+    this.AdImages = [];
+    this.imageURLs = [];
   }
 
 
@@ -175,6 +222,14 @@ export class NewComponent implements OnInit {
     window.location.href = `${ url }`;
   }
 
+
+  generateAIContent(name: string, type: string) {
+    this._appService.generateAIContent({
+      prompt: `generate description of service and industry of  ${name} of ${type} format result as text.`
+    }).subscribe((response: any) => {
+      this.AIResponse = response;
+    });
+  }
 
 
 }

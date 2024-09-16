@@ -2,6 +2,13 @@ import { mutation, internalMutation } from "./_generated/server";
 import { v } from 'convex/values';
 
 
+export const newPostView = mutation({
+  handler: async(ctx, args: any) => {
+    return await ctx.db.insert('adViews',  args);
+  }
+});
+
+
 
 
 /*export const addSAML2Sessions = mutation({

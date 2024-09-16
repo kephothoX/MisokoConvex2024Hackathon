@@ -21,11 +21,11 @@ export class  LNPropertiesService {
 
 
   newLNProperty(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/lNProperties/new`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/lNProperties/new`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   updateLNProperty(data: any): Observable<any> {
-    return this._httpClient.post(`${ this._appService.APIEndpoint }/lNProperties/update`, data).pipe(catchError(this._errorService.handleError));
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/lNProperties/update`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
   getAllLNProperties(): Observable<any> {
@@ -40,6 +40,10 @@ export class  LNPropertiesService {
     return this._httpClient.post(`${ this._appService.APIEndpoint }/lNProperty`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
   }
 
+
+  getSimilarLNProperties(data: any): Observable<any> {
+    return this._httpClient.post(`${ this._appService.APIEndpoint }/lNProperties/similar`, data, this._appService.httpOptions).pipe(catchError(this._errorService.handleError));
+  }
 
  
 }

@@ -4,34 +4,83 @@ import { v } from 'convex/values';
 
 export default defineSchema({
 
-  ...authTables,
+  users: defineTable({
+    name: v.optional(v.string()),
+    image: v.optional(v.string()),
+    email: v.optional(v.string()),
+    emailVerificationTime: v.optional(v.number()),
+    phone: v.optional(v.string()),
+    phoneVerificationTime: v.optional(v.number()),
+    isAnonymous: v.optional(v.boolean()),
+  })
+    .index("email", ["email"])
+    .index("phone", ["phone"]),
+
+  authSessions: defineTable({
+    userId: v.optional(v.id("users")),
+    expirationTime: v.optional(v.number()),
+  }).index("userId", ["userId"]),
+
+  authAccounts: defineTable({
+    userId: v.optional(v.id("users")),
+    provider: v.optional(v.string()),
+    providerAccountId: v.optional(v.string()),
+    secret: v.optional(v.string()),
+    emailVerified: v.optional(v.string()),
+    phoneVerified: v.optional(v.string()),
+  })
+  .index("userIdAndProvider", ["userId", "provider"])
+  .index("providerAndAccountId", ["provider", "providerAccountId"]),
+
+  authRefreshTokens: defineTable({
+    sessionId: v.optional(v.id("authSessions")),
+    expirationTime: v.optional(v.number()),
+  }).index("sessionId", ["sessionId"]),
+
+
+  authVerificationCodes: defineTable({
+    accountId: v.optional(v.id("authAccounts")),
+    provider: v.optional(v.string()),
+    code: v.optional(v.string()),
+    expirationTime: v.optional(v.number()),
+    verifier: v.optional(v.string()),
+    emailVerified: v.optional(v.string()),
+    phoneVerified: v.optional(v.string()),
+  })
+  .index("accountId", ["accountId"])
+  .index("code", ["code"]),
+
+  authVerifiers: defineTable({
+    sessionId: v.optional(v.id("authSessions")),
+    signature: v.optional(v.string()),
+  }).index("signature", ["signature"]),
+
+  authRateLimits: defineTable({
+    identifier: v.optional(v.string()),
+    lastAttemptTime: v.optional(v.number()),
+    attemptsLeft: v.optional(v.number()),
+  }).index("identifier", ["identifier"]),
+
 
   adViews: defineTable({
     created_by: v.string(),
+    view_id: v.string(),
     ad_id: v.string(),
   })
-  .index('by_ad_id', ['ad_id']),
+  .index('ad_id', ['ad_id'])
+  .index('by_view_id', ['view_id']),
 
   adComments:defineTable({
     ad_id: v.string(),
     comment: v.string(),
-    created_by: v.string(),
-    published: v.boolean(),
-    created_at: v.optional(v.string()),
-    updated_at: v.optional(v.string())
+    created_by: v.string()
   })
-  .index('by_ad_id', ['ad_id'])
-  .index('created_by', ['created_by'])
-  .searchIndex('phone_id', {
-    searchField: 'ad_id',
-    filterFields: ['ad_id', 'comment', 'created_by', 'created_at']
-  }),
+  .index('ad_id', ['ad_id'])
+  .index('created_by', ['created_by']),
 
 
   eNAppliances: defineTable({
     name: v.string(),
-    created_at: v.string(),
-    updated_at: v.string(),
     description: v.string(),
     price_amount: v.number(),
     ad_images: v.array(v.string()),
@@ -40,9 +89,18 @@ export default defineSchema({
     ad_phone_number: v.string(),
     ad_email: v.string(),
     location: v.string(),
-    created_by: v.string()
+    created_by: v.string(),
+    embeddings: v.array(v.float64())
   })
-  .index('by_name', ['name']),
+  .index('by_name', ['name'])
+  .searchIndex('name', {
+    searchField: 'name',
+    filterFields: ['name', 'description']
+  })
+  .vectorIndex("embeddings", {
+    vectorField: "embeddings",
+    dimensions: 768
+  }),
   
   
   canvaFolders: defineTable({
@@ -51,10 +109,10 @@ export default defineSchema({
     folderName: v.string(),
     folderID: v.string(),
   })
-  .index('by_canvaUserID', ['canvaUserID'])
-  .index('by_canvaTeamID', ['canvaTeamID'])
-  .index('by_folderName', ['folderName'])
-  .index('by_folderID', ['folderID']),
+  .index('canvaUserID', ['canvaUserID'])
+  .index('canvaTeamID', ['canvaTeamID'])
+  .index('folderName', ['folderName'])
+  .index('folderID', ['folderID']),
 
   canvaAssets: defineTable({
     canvaUserID: v.string(),
@@ -62,16 +120,14 @@ export default defineSchema({
     assetName: v.string(),
     assetID: v.string(),
   })
-  .index('by_canvaUserID', ['canvaUserID'])
-  .index('by_canvaTeamID', ['canvaTeamID'])
-  .index('by_assetName', ['assetName'])
-  .index('by_assetID', ['assetID']),
+  .index('canvaUserID', ['canvaUserID'])
+  .index('canvaTeamID', ['canvaTeamID'])
+  .index('assetName', ['assetName'])
+  .index('assetID', ['assetID']),
 
 
   pNAccessories: defineTable({
     created_by: v.string(),
-    created_at: v.optional(v.string()),
-    updated_at: v.optional(v.string()),
     name: v.string(),
     specifications: v.string(),
     description: v.string(),
@@ -82,20 +138,24 @@ export default defineSchema({
     ad_email: v.string(),
     ad_images: v.array(v.string()),
     location: v.string(),
-  }).index('by_name', ['name'])
-    .index('by_specifications', ['specifications'])
-    .index('by_created_by', ['created_by'])
-    .index('by_published', ['published'])
-    .searchIndex('name', {
-      searchField: 'name',
-      filterFields: ['name', 'specifications', 'ad_images']
-    }),
+    embeddings: v.array(v.float64())
+  })
+  .index('by_name', ['name'])
+  .index('specifications', ['specifications'])
+  .index('created_by', ['created_by'])
+  .index('published', ['published'])
+  .searchIndex('name', {
+    searchField: 'name',
+    filterFields: ['name', 'specifications', 'description']
+  })
+  .vectorIndex("embeddings", {
+    vectorField: "embeddings",
+    dimensions: 768
+  }),
 
 
   sNIndustries: defineTable({
     name: v.string(),
-    created_at: v.string(),
-    updated_at: v.string(),
     type: v.string(),
     description: v.string(),
     price_amount: v.number(),
@@ -105,57 +165,18 @@ export default defineSchema({
     ad_email: v.string(),
     published: v.boolean(),
     location: v.string(),
-    created_by: v.string()
+    created_by: v.string(),
+    embeddings: v.array(v.float64())
   })
-  .index('by_name', ['name']),
-
-
-
-  usersProfiles: defineTable({
-      created_by: v.string(),
-      created_at: v.optional(v.string()),
-      updated_at: v.optional(v.string()),
-      about: v.string(),
-      country: v.string(),
-      date_of_birth: v.string(),
-      email: v.string(),
-      hobbies: v.string(),
-      interests: v.string(),
-      phone_number: v.string(),
-      profile_thumbnail: v.string(),
-      social_image_url: v.string(),
-      username: v.string(),
-      active: v.boolean()
-    })
-    .index('by_email', ['email'])
-    .index('by_username', ['username'])
-    .index('by_created_by', ['created_by'])
-    .index('by_phone_number', ['phone_number'])
-    .searchIndex('email', {
-      searchField: 'email',
-      filterFields: ['email', 'phone_number', 'username']
-    }),
-  
-
-  users: defineTable({
-    id: v.optional(v.number()),
-    name: v.optional(v.string()),
-    image: v.optional(v.string()),
-    email: v.optional(v.string()),
-    emailVerificationTime: v.optional(v.number()),
-    phone: v.optional(v.string()),
-    phoneVerificationTime: v.optional(v.number()),
-    isAnonymous: v.optional(v.boolean()),
-    family_name: v.optional(v.string()),
-    given_name: v.optional(v.string()),
-    created_at: v.optional(v.string()),
-    updated_at: v.optional(v.string()),
-    active: v.boolean(),
+  .index('by_name', ['name'])
+  .searchIndex('name', {
+    searchField: 'name',
+    filterFields: ['name', 'type', 'description']
   })
-  .index('email', ['email'])
-  .index('by_family_name', ['family_name'])
-  .index('by_given_name', ['given_name'])
-  .index('by_active', ['active']),  
+  .vectorIndex("embeddings", {
+    vectorField: "embeddings",
+    dimensions: 768
+  }),
 
   
   lNProperties: defineTable({
@@ -170,12 +191,19 @@ export default defineSchema({
     ad_email: v.string(),
     ad_images: v.array(v.string()),
     location: v.string(),
-    created_at: v.optional(v.string()),
-    updated_at: v.optional(v.string()),
+    embeddings: v.array(v.float64())
   })
   .index('by_name', ['name'])
-  .index('by_description', ['description'])
-  .index('by_created_by', ['created_by']),
+  .index('description', ['description'])
+  .index('created_by', ['created_by'])
+  .searchIndex('name', {
+    searchField: 'name',
+    filterFields: ['name', 'transaction_type', 'description']
+  })
+  .vectorIndex("embeddings", {
+    vectorField: "embeddings",
+    dimensions: 768
+  }),
  
   
 
@@ -200,21 +228,24 @@ export default defineSchema({
     ad_email: v.string(),    
     location: v.string(),
     transaction_type: v.string(),
-    created_at: v.optional(v.string()),
-    updated_at: v.optional(v.string()),
+    embeddings: v.array(v.float64())
   })
   .index('by_make', ['make'])
   .index('by_model', ['model'])
-  .index('by_key_features', ['key_features'])
-  .index('by_created_by', ['created_by'])
-  .index('by_published', ['published'])
+  .index('key_features', ['key_features'])
+  .index('created_by', ['created_by'])
+  .index('published', ['published'])
   .searchIndex('model', {
     searchField: 'model',
-    filterFields: ['make', 'model', 'yom']
+    filterFields: ['make', 'model']
   })  
   .searchIndex('make', {
     searchField: 'make',
-    filterFields: ['make', 'model', 'yom']
-  }),  
-  
+    filterFields: ['make', 'model']
+  })
+  .vectorIndex("embeddings", {
+    vectorField: "embeddings",
+    dimensions: 768
+  })
+
 });

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  ENDPOINT:  'https://disciplined-sandpiper-967.convex.site/api'
+  ENDPOINT:  'https://upbeat-porpoise-149.convex.site/api'
 };
 
 

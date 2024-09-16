@@ -12,6 +12,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { PNAccessoriesRoutingModule } from './pNAccessories-routing.module';
 import { PNAccessoriesComponent } from './pNAccessories.component';
@@ -39,7 +40,8 @@ import { ViewComponent } from './view/view.component';
     MatDividerModule,
     MatGridListModule,
     MatProgressBar,
-    MatListModule
+    MatListModule,
+    MatExpansionModule
   ]
 })
 export class PNAccessoriesModule { }

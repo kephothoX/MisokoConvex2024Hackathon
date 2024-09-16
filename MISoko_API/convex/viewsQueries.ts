@@ -6,7 +6,7 @@ export const getViewsPerAd = query({
   handler: async (ctx, args: any) => {
     return await ctx.db
     .query('adViews')
-    .withIndex('by_ad_id')
+    .withIndex('ad_id')
     .filter((q) => q.eq(q.field('ad_id'), args.ad_id))
     .collect()
   

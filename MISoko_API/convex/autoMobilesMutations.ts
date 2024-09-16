@@ -13,8 +13,8 @@ export const newAutoMobile = mutation({
 
 export const updateAutoMobile = mutation({
   args: { 
-    id: v.id('eNAppliances'), 
-     make: v.string(),
+    id: v.id('autoMobiles'), 
+    make: v.string(),
     model: v.string(),
     chassis_number: v.string(),
     category: v.string(),
@@ -33,7 +33,8 @@ export const updateAutoMobile = mutation({
     ad_email: v.string(),    
     location: v.string(),
     transaction_type: v.string(),
-    updated_at: v.optional(v.string()),
+    created_by: v.string(),
+    embeddings: v.array(v.float64())
   },
 
   handler: async (ctx, args) => {
@@ -59,7 +60,8 @@ export const updateAutoMobile = mutation({
       ad_email: args.ad_email,
       location: args.location,
       transaction_type: args.transaction_type,
-      updated_at: args.updated_at,
+      created_by: args.created_by,
+      embeddings: args.embeddings
     });
 
   },

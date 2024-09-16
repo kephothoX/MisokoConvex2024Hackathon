@@ -11,6 +11,7 @@ import { LNProperty } from '../lNProperty';
 })
 export class ViewComponent  implements OnInit {
   LNProperty?: LNProperty;
+  LNProperties?: LNProperty[];
 
   constructor (
     private _lNPropertiesService: LNPropertiesService,
@@ -21,6 +22,9 @@ export class ViewComponent  implements OnInit {
     this._lNPropertiesService.getLNPropertyByID({ id: this._activatedRoute.snapshot.params['id'] }).subscribe((response: any) => {
 
       this.LNProperty = response[0];
+      this._lNPropertiesService.getSimilarLNProperties({ query: response[0].description }).subscribe((res: any) => {
+        this.LNProperties = res;
+      });
     });
    }
 

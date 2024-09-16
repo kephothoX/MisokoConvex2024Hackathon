@@ -18,34 +18,47 @@
           <mat-label>Name </mat-label>
           <mat-icon matPrefix class="material-symbols-outlined">info</mat-icon>
           <mat-hint align="end">Name of the AD</mat-hint>
-          <input type="text" matInput formControlName="name" [(ngModel)]="PNAccessory.name">
+          <input type="text" matInput formControlName="name" [(ngModel)]="PNAccessory.name" #name>
         </mat-form-field>
 
+        <mat-divider></mat-divider>
+        <h5 class="fs-6">Upload Video</h5>
+        <video class="image-fluid d-block object-fit" controls>
+          <source src="{{ VideoURL }}" type="video/mp4">  
+          Your browser does not support the video tag.
+        </video>
+                   
 
+        <button mat-raised-button class="p-1">
+          <mat-icon class="material-symbols-outlined">attachment</mat-icon>
+          <input type="file" (change)="onVideoUpload($event)" accept="video/*" #AdVideos />
+        </button>
 
-        <mat-form-field appearance="fill" class="p-1  form-control">
-          <mat-label>Video Link </mat-label>
-          <mat-icon matPrefix class="material-symbols-outlined">info</mat-icon>
-          <mat-hint align="end">Any public video Link of the AD</mat-hint>
-          <input type="text" matInput formControlName="video_link" [(ngModel)]="PNAccessory.video_link">
-        </mat-form-field>
+       <mat-divider></mat-divider> 
+       <h5 class="fs-6">Upload Images</h5>
 
         <mat-grid-list cols="3" rowHeight="3:1">
-          <mat-grid-tile *ngFor="let img of PNAccessory.ad_images">
+          <mat-grid-tile *ngFor="let img of imageURLs">
             <img src="{{ img }}" mat-card-lg-image class="image-fluid d-block" alt="Image To Be Uploaded" />
           </mat-grid-tile>
         </mat-grid-list>
 
         <button mat-raised-button class="p-1">
           <mat-icon class="material-symbols-outlined">attachment</mat-icon>
-          <input type="file" id="attachments" (change)="onFileChange($event)" accept="*" multiple />
+          <input type="file" id="AdImages" (change)="onFileChange($event)" accept="image/*" multiple  #AdImages />
         </button>
 
 
-        <button mat-stroked-button color="primary" data-bs-toggle="modal" data-bs-target="#myCanvaDesignsModal"
+
+        <button mat-fab extended color="tertiary" data-bs-toggle="modal" data-bs-target="#myCanvaDesignsModal"
           (click)="getCanvaDesigns()">
-          <mat-icon class="material-symbols-outlined">upload</mat-icon>
+          <img src="assets/canva/icons8-canva-48.svg" alt="Canva" />
           Upload From  Canva
+        </button>
+
+        <button mat-raised-button color="warn" class="text-white" (click)="removeAdImages()">
+          <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          Remove Images
         </button>
 
 
@@ -101,7 +114,7 @@
                 <a routerLink="/canva">
                   <button mat-fab extended color="primary">
                     Continue With 
-                    <img src="assets/canva/canva_blue.svg" alt="canva" class="img-thumbnail" />                               
+                    <img src="assets/canva/icons8-canva-48-1.svg" alt="Canva" />                               
                   </button>
                 </a>
                 <button mat-icon-button color="warn" data-bs-dismiss="modal">
@@ -117,16 +130,25 @@
           <mat-icon matPrefix class="material-symbols-outlined">info</mat-icon>
           <mat-hint align="end">Full Specifications Of The AD.</mat-hint>
           <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="auto"
-            cdkAutosizeMaxRows="auto" formControlName="specifications" [(ngModel)]="PNAccessory.specifications">
+            cdkAutosizeMaxRows="auto" formControlName="specifications" [(ngModel)]="PNAccessory.specifications" #specs>
           </textarea>
         </mat-form-field>
+
+         <div class="alert alert-info" role="alert">
+          <p>Let Gemini AI Generate Phone Description</p>
+          <button mat-raised-button color="primary" class="text-white" (click)="generateAIContent(name.value, specs.value)">
+            <mat-icon class="material-symbols-outlined">input_circle</mat-icon>
+            Generate
+          </button>
+        </div>
 
         <mat-form-field appearance="fill" class="p-1  form-control">
           <mat-label>Full Description</mat-label>
           <mat-icon matPrefix class="material-symbols-outlined">info</mat-icon>
           <mat-hint align="end">Full Description Of The AD.</mat-hint>
           <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="auto"
-            cdkAutosizeMaxRows="auto" formControlName="description" [(ngModel)]="PNAccessory.description">
+            cdkAutosizeMaxRows="auto" formControlName="description"  [(ngModel)]="PNAccessory.description">
+            {{ AIResponse }}
           </textarea>
         </mat-form-field>
 
@@ -165,7 +187,7 @@
           <button type="submit" mat-raised-button color="primary" (click)="ngOnSubmit()"
             [disabled]="!updatePNAccessoryForm.valid"><mat-icon class="material-symbols-outlined">save</mat-icon>Save AD</button>
           <button type="reset" mat-raised-button color="warn"
-            (click)="resetForm()"><mat-icon>cancel</mat-icon>Clear</button>
+            (click)="resetForm()"><mat-icon class="material-symbols-outlined">cancel</mat-icon>Clear</button>
         </mat-card-actions>
 
 

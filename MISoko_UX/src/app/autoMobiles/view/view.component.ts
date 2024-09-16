@@ -11,6 +11,7 @@ import { AutoMobile } from '../autoMobiles';
 })
 export class ViewComponent  implements OnInit {
   AutoMobile?: AutoMobile;
+  AutoMobiles?: AutoMobile[];
 
   constructor (
     private _autoMobilesService: AutoMobilesService,
@@ -21,6 +22,9 @@ export class ViewComponent  implements OnInit {
     this._autoMobilesService.getAutoMobileByID({ id: this._activatedRoute.snapshot.params['id'] }).subscribe((response: any) => {
 
       this.AutoMobile = response[0];
+      this._autoMobilesService.getSimilarAutoMobiles({ query: response[0].description }).subscribe((res: any) => {
+        this.AutoMobiles = res;
+      });
     })
    }
 

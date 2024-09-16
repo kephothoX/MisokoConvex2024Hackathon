@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthnService } from '../authn/authn.service';
-import { AppService } from '../app.service';
 
 import { ENAppliancesService } from '../eNAppliances/eNAppliances.service';
 import { AutoMobilesService } from '../autoMobiles/autoMobiles.service';
@@ -14,12 +12,12 @@ import { LNProperty } from '../lNProperties/lNProperty';
 import { SNIndustry } from '../sNIndustry/sNIndustry';
 import { PNAccessory } from '../pNAccessories/pNAccessory';
 
-import { CanvaService } from '../canva/canva.service';
+import { HomeService } from './home.service'
 
 
 
 
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -35,15 +33,13 @@ export class HomeComponent implements OnInit {
 
 
   constructor (
-    private _authnService: AuthnService,
-    private _appService: AppService,
-    private _router: Router,
-    private _canvaService: CanvaService,
+    private _homeService: HomeService,
     private _eNAppliancesService: ENAppliancesService,
     private _sNIndustriesService: SNIndustryService,
     private _autoMobilesService: AutoMobilesService,
     private _lNPropertiesService: LNPropertiesService,
     private _pNAccessoriesService: PNAccessoriesService,
+    private _router: Router,
     public _matSnackBar: MatSnackBar,
   ) {}
 
@@ -52,6 +48,12 @@ export class HomeComponent implements OnInit {
     this.getENAppliances();
     
     this.getPNAccessories();
+  }
+
+
+  ngOnSubmit(value: string) {
+    this._router.navigate([`/home/search/${value}`]);
+    
   }
 
   getENAppliances() {

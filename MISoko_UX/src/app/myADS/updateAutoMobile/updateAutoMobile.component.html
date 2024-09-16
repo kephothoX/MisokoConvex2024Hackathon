@@ -6,13 +6,13 @@
     
     <mat-divider></mat-divider>
     <mat-card-content *ngIf="AutoMobile">
-      <form [formGroup]="updateAutoMobileForm"  (ngSubmit)="onSubmit()" class="mat-elevation-z4 centered form col-lg-6 col-md-10 col-sm-12"
+      <form [formGroup]="updateAutoMobileForm"  class="mat-elevation-z4 centered form col-lg-4 col-md-12 col-sm-12"
                 enctype="application/x-www-form-url-encoded">
 
 
         <mat-form-field appearance="fill" class="p-1  form-control">
         <mat-label>AutoMobile Make</mat-label>
-          <select matNativeControl formControlName="make" [(ngModel)]="AutoMobile.make">
+          <select matNativeControl formControlName="make" [(ngModel)]="AutoMobile.make" #make>
             <option label="--Select Applicable--"></option>
             <option *ngFor="let entry of AutoMobileMakes" value="entry"> {{ entry.Name }}</option>
           </select>
@@ -26,13 +26,13 @@
           <mat-label>AutoMobile Model </mat-label>
           <mat-icon matPrefix  class="material-symbols-outlined">info</mat-icon>
           <mat-hint align="end">Model of the AutoMobile</mat-hint>
-          <input type="text" matInput  formControlName = "model" [(ngModel)]="AutoMobile.model">
+          <input type="text" matInput  formControlName = "model" [(ngModel)]="AutoMobile.model" #model>
         </mat-form-field>
         
 
         <mat-form-field>
           <mat-label>Year Of Manufacture</mat-label>
-          <input matInput [matDatepicker]="YOMDatePicker" formControlName="yom" [(ngModel)]="AutoMobile.yom">
+          <input matInput [matDatepicker]="YOMDatePicker" formControlName="yom" [(ngModel)]="AutoMobile.yom" #yom>
           <mat-hint>Year Of Manufacture As: MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="YOMDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #YOMDatePicker></mat-datepicker>
@@ -51,7 +51,8 @@
             cdkAutosizeMinRows="auto"
             cdkAutosizeMaxRows="auto"
             formControlName = "key_features"
-            [(ngModel)]="AutoMobile.key_features">
+            [(ngModel)]="AutoMobile.key_features"
+            #keyFeatures>
           </textarea>
         </mat-form-field>
         
@@ -61,7 +62,7 @@
           <mat-label>AutoMobile Chassis </mat-label>
           <mat-icon matPrefix  class="material-symbols-outlined">info</mat-icon>
           <mat-hint align="end">AutoMobile Chassis Number If Applicable</mat-hint>
-          <input type="text" matInput  formControlName = "chassis" p[(ngModel)]="AutoMobile.chassis">
+          <input type="text" matInput  formControlName = "chassis" p[(ngModel)]="AutoMobile.chassis" #chassis>
         </mat-form-field>
         
 
@@ -70,7 +71,7 @@
           <mat-label>AutoMobile Engine </mat-label>
           <mat-icon matPrefix  class="material-symbols-outlined">info</mat-icon>
           <mat-hint align="end">Engine Specs i.e 2000CC</mat-hint>
-          <input type="text" matInput  formControlName = "engine" [(ngModel)]="AutoMobile.engine">
+          <input type="text" matInput  formControlName = "engine" [(ngModel)]="AutoMobile.engine" #engine>
         </mat-form-field>
         
 
@@ -84,8 +85,7 @@
              {{ entry }}
             </mat-radio-button>
           </mat-radio-group>
-        </div>
-        
+        </div>    
 
 
 
@@ -93,27 +93,47 @@
           <mat-label>AutoMobile Body Color</mat-label>
           <mat-icon matPrefix  class="material-symbols-outlined">info</mat-icon>
           <mat-hint align="end">AutoMobile Body Color</mat-hint>
-          <input type="text" matInput  formControlName = "body_color" [(ngModel)]="AutoMobile.body_color">
+          <input type="text" matInput  formControlName = "body_color" [(ngModel)]="AutoMobile.body_color" #bodyColor>
         </mat-form-field>
         
 
-        <mat-form-field appearance="fill" class="p-1  form-control">
-          <mat-label>Video Link </mat-label>
-          <mat-icon matPrefix  class="material-symbols-outlined">info</mat-icon>
-          <mat-hint align="end"></mat-hint>
-          <input type="text" matInput  formControlName = "video_link" [(ngModel)]="AutoMobile.video_link">
-        </mat-form-field>
+        <mat-divider></mat-divider>
+        <h5 class="fs-6">Upload Video</h5>
+        <video class="image-fluid d-block object-fit" controls>
+          <source src="{{ VideoURL }}" type="video/mp4">  
+          Your browser does not support the video tag.
+        </video>
+                   
 
         <button mat-raised-button class="p-1">
           <mat-icon class="material-symbols-outlined">attachment</mat-icon>
-          <input type="file" id="attachments" (change)="onFileChange($event)" accept="*" multiple />
+          <input type="file" (change)="onVideoUpload($event)" accept="video/*" #AdVideos />
+        </button>
+
+       <mat-divider></mat-divider> 
+       <h5 class="fs-6">Upload Images</h5>
+
+        <mat-grid-list cols="3" rowHeight="3:1">
+          <mat-grid-tile *ngFor="let img of imageURLs">
+            <img src="{{ img }}" mat-card-lg-image class="image-fluid d-block" alt="Image To Be Uploaded" />
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        <button mat-raised-button class="p-1">
+          <mat-icon class="material-symbols-outlined">attachment</mat-icon>
+          <input type="file" id="AdImages" (change)="onFileChange($event)" accept="image/*" multiple  #AdImages />
         </button>
 
 
-        <button mat-stroked-button color="primary" data-bs-toggle="modal" data-bs-target="#myCanvaDesignsModal"
+        <button mat-fab extended color="tertiary" data-bs-toggle="modal" data-bs-target="#myCanvaDesignsModal"
           (click)="getCanvaDesigns()">
-          <mat-icon class="material-symbols-outlined">upload</mat-icon>
+          <img src="assets/canva/icons8-canva-48.svg" alt="Canva" />
           Upload From  Canva
+        </button>
+
+        <button mat-raised-button color="warn" class="text-white" (click)="removeAdImages()">
+          <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          Remove Images
         </button>
 
 
@@ -169,7 +189,7 @@
                 <a routerLink="/canva">
                   <button mat-fab extended color="primary">
                     Continue With 
-                    <img src="assets/canva/canva_blue.svg" alt="canva" class="img-thumbnail" />                               
+                    <img src="assets/canva/icons8-canva-48-1.svg" alt="Canva" />                               
                   </button>
                 </a>
                 <button mat-icon-button color="warn" data-bs-dismiss="modal">
@@ -180,7 +200,13 @@
           </div>
         </div>
 
-        
+       <div class="alert alert-info" role="alert">
+          <p>Let Gemini AI Generate AutoMobile Description</p>
+          <button mat-raised-button color="primary" class="text-white" (click)="generateAIContent(make.value, model.value, yom.value, keyFeatures.value, chassis.value, engine.value, bodyColor.value)">
+            <mat-icon class="material-symbols-outlined">input_circle</mat-icon>
+            Generate
+          </button>
+        </div>  
 
 
         <mat-form-field appearance="fill" class="p-1  form-control">
@@ -234,7 +260,7 @@
 
 
         <mat-card-actions class="align-buttons-center">
-          <button type="submit" mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!updateAutoMobileForm.valid" ><mat-icon class="material-symbols-outlined">save</mat-icon>Submit AD</button>
+          <button type="submit" mat-raised-button color="primary" (click)="ngOnSubmit()" [disabled]="!updateAutoMobileForm.valid" ><mat-icon class="material-symbols-outlined">save</mat-icon>Submit AD</button>
           <button type="reset" mat-raised-button color="warn" (click)="resetForm()"><mat-icon class="material-symbols-outlined">cancel</mat-icon>Clear</button>
         </mat-card-actions>
 

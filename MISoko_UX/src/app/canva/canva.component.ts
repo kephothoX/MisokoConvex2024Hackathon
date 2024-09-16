@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthnService } from '../authn/authn.service';
 import { AppService } from '../app.service';
 
@@ -30,6 +30,7 @@ export class CanvaComponent implements OnInit {
     private _appService: AppService,
     private _formBuilder: FormBuilder,
     private _router: Router,
+    private _activatedRoute: ActivatedRoute,
     private _canvaService: CanvaService,
     public _matSnackBar: MatSnackBar,
     private _matDialog: MatDialog
@@ -37,6 +38,15 @@ export class CanvaComponent implements OnInit {
 
 
   ngOnInit(): void {
+    const code = this._activatedRoute.snapshot.queryParams['code'];
+
+    this._authnService.genRefreshToken({ code: code }).subscribe((response: any) => {
+      window.sessionStorage.setItem('accessToken', response.access_token);
+      window.sessionStorage.setItem('refreshToken', response.refresh_token);
+
+      this._router.navigate(['/home']);
+
+    });     
     this._canvaService.InitializeCanva();
   }
 
@@ -80,8 +90,7 @@ export class CanvaComponent implements OnInit {
 
 
     this._canvaService.uploadAsset(this.formData).subscribe((response: any) => {
-      console.log(response);
-    })
+    });
   }
 
   onFileChange(event: any) {
@@ -128,21 +137,17 @@ export class CanvaComponent implements OnInit {
 
   geminiAsset(): void {
     this._canvaService.geminiAsset(this.formData).subscribe((response: any) => {
-      console.log(response);
-
     });
   }
 
   newCanvaDesign(): void {
     this._canvaService.newCanvaDesign({ accessToken: window.sessionStorage.getItem('accessToken')}).subscribe((response: any) => {
-      console.log(response);
     })
   }
 
 
   getCanvaBrandTemplates(): void {
     this._canvaService.getCanvaBrandTemplates({ accessToken: window.sessionStorage.getItem('accessToken')}).subscribe((response: any) => {
-      console.log(response);
     })
   }
 
@@ -366,7 +371,6 @@ export class FolderInfoDialog implements OnInit{
       accessToken: window.sessionStorage.getItem('accessToken'),
       folderID: folder.id,
     }).subscribe((response: any) => {
-      console.log(response);
     });
   }
 

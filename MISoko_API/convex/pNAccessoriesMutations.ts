@@ -15,8 +15,6 @@ export const updatePNAccessories = mutation({
   args: { 
     id: v.id('pNAccessories'), 
     name: v.string(),
-    created_at: v.string(),
-    updated_at: v.string(),
     description: v.string(),
     specifications: v.string(),
     price_amount: v.number(),
@@ -26,7 +24,8 @@ export const updatePNAccessories = mutation({
     location: v.string(),
     ad_phone_number: v.string(),
     ad_email: v.string(),
-    created_by: v.string()
+    created_by: v.string(),
+    embeddings: v.array(v.float64())
   },
 
   handler: async (ctx, args) => {
@@ -34,8 +33,6 @@ export const updatePNAccessories = mutation({
     
     return await ctx.db.patch(id, {
       name: args.name,
-      created_at: args.created_at,
-      updated_at: args.updated_at,
       description: args.description,
       specifications: args.specifications,
       price_amount: args.price_amount,
@@ -45,7 +42,8 @@ export const updatePNAccessories = mutation({
       ad_phone_number: args.ad_phone_number,
       ad_email: args.ad_email,
       location: args.location,
-      created_by: args.created_by
+      created_by: args.created_by,
+      embeddings: args.embeddings
     });
     
   },

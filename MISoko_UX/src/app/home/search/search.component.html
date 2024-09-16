@@ -1,0 +1,157 @@
+<section class="container-fluid">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="mat-elevation-z8 card-group flex-row" *ngIf="PNAccessories">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <mat-card class="card mb-3" *ngFor="let entry of PNAccessories">
+
+                    <div class="col d-flex flex-row">
+                        <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                            <img mat-card-lg-image src="{{  entry.ad_images[1] }}" alt="MISoko"
+                                class="img-fluid object-fit-fill rounded mx-auto d-block card-img-top" />
+                        </a>
+                    </div>
+
+                    <mat-card-content>
+                        <h3 class="fs-3 align-center text-accent card-title">{{ entry.name }}</h3>
+                        <mat-card-footer>
+                            <h4 class="fs-4 text-warn">{{ entry.price_amount | currency }}</h4>
+                            <p>{{ entry.location }}</p>
+                            <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                                <button mat-icon-button color="primary">
+                                    <mat-icon class="material-symbols-outlined">open_in_new</mat-icon>
+                                </button>
+                            </a>
+                        </mat-card-footer>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="mat-elevation-z8 card-group flex-row" *ngIf="AutoMobiles">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <mat-card class="card mb-3" *ngFor="let entry of AutoMobiles">
+                    <div class="col d-flex flex-row">
+                        <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                            <img mat-card-lg-image src="{{  entry.ad_images[1] }}" alt="MISoko"
+                                class="img-fluid object-fit-fill rounded mx-auto d-block card-img-top" />
+                        </a>
+                    </div>
+
+                    <mat-card-content>
+                        <h3 class="fs-3 align-center text-accent card-title">{{ entry.make }}</h3>
+                        <mat-card-footer>
+                            <h4 class="fs-4 text-warn">{{ entry.price_amount | currency }}</h4>
+                            <p>{{ entry.location }}</p>
+                            <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                                <button mat-icon-button color="primary">
+                                    <mat-icon class="material-symbols-outlined">open_in_new</mat-icon>
+                                </button>
+                            </a>
+                        </mat-card-footer>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="mat-elevation-z8 card-group flex-row" *ngIf="LNProperties">
+            <div class="col-lg-4 col-md-6 col=sm-12">
+                <mat-card class="card mb-3" *ngFor="let entry of LNProperties">
+                    <div class="col d-flex flex-row">
+                        <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                            <img mat-card-lg-image src="{{  entry.ad_images[1] }}" alt="MISoko"
+                                class="img-thumbnail object-fit-fill rounded mx-auto d-block card-img-top" />
+                        </a>
+                    </div>
+
+                    <mat-card-content>
+                        <h3 class="fs-3 align-center text-accent card-title">{{ entry.name }}</h3>
+                        <mat-card-footer>
+                            <h4 class="fs-4 text-warn">{{ entry.price_amount | currency }}</h4>
+                            <p>{{ entry.location }}</p>
+                            <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                                <button mat-icon-button color="primary">
+                                    <mat-icon class="material-symbols-outlined">open_in_new</mat-icon>
+                                </button>
+                            </a>
+                        </mat-card-footer>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="mat-elevation-z8 card-group flex-row" *ngIf="SNIndustries">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <mat-card class="card mb-3" *ngFor="let entry of SNIndustries">
+                    <div class="col d-flex flex-row">
+                        <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                            <img mat-card-lg-image src="{{  entry.ad_images[1] }}" alt="MISoko"
+                                class="img-thumbnail object-fit-fill rounded mx-auto d-block card-img-top" />
+                        </a>
+                    </div>
+
+                    <mat-card-content>
+                        <h3 class="fs-3 align-center text-accent card-title">{{ entry.name }}</h3>
+                        <mat-card-footer>
+                            <h4 class="fs-4 text-warn">{{ entry.price_amount | currency }}</h4>
+                            <p>{{ entry.location }}</p>
+                            <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                                <button mat-icon-button color="primary">
+                                    <mat-icon class="material-symbols-outlined">open_in_new</mat-icon>
+                                </button>
+                            </a>
+                        </mat-card-footer>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="mat-elevation-z8 card-group flex-row" *ngIf="ENAppliances">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <mat-card class="card mb-3" *ngFor="let entry of ENAppliances">
+                    <div class="col d-flex flex-row">
+                        <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                            <img mat-card-lg-image src="{{  entry.ad_images[1] }}" alt="MISoko"
+                                class="img-thumbnail object-fit-fill rounded mx-auto d-block card-img-top" />
+                        </a>
+                    </div>
+
+                    <mat-card-content>
+                        <h3 class="fs-3 align-center text-accent card-title">{{ entry.name }}</h3>
+                        <mat-card-footer>
+                            <h4 class="fs-4 text-warn">{{ entry.price_amount | currency }}</h4>
+                            <p>{{ entry.location }}</p>
+                            <a routerLink="/eNAppliances/view/{{ entry._id}}">
+                                <button mat-icon-button color="primary">
+                                    <mat-icon class="material-symbols-outlined">open_in_new</mat-icon>
+                                </button>
+                            </a>
+                        </mat-card-footer>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <mat-divider></mat-divider>
+
+    <mat-card>
+        <mat-card-content>
+            <a routerLink="/canva">
+                <button mat-fab extended color="primary">
+                    Continue With
+                    <img src="assets/canva/canva_blue.svg" alt="canva" class="img-thumbnail" />
+                </button>
+            </a>
+        </mat-card-content>
+    </mat-card> -->
+</section>

@@ -2,20 +2,17 @@ import { httpAction } from './_generated/server';
 import { api, internal } from './_generated/api';
 
 
-export const newComment = httpAction(async (ctx, request) => {
+export const newAdComment = httpAction(async (ctx, request) => {
     const params = JSON.parse(await request.text());
 
 
     const values = {
-        ad_id: params.post_id,
+        ad_id: params.ad_id,
         comment: params.comment,
-        created_by: params.created_by,
-        published: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        created_by: params.created_by
     }
 
-    const response = await ctx.runMutation(api.commentsMutations.newComment, values);
+    const response = await ctx.runMutation(api.adCommentsMutations.newAdComment, values);
 
     return new Response(JSON.stringify(response), {
         headers: {
@@ -28,19 +25,17 @@ export const newComment = httpAction(async (ctx, request) => {
     });
 });
 
-export const updateComment = httpAction(async (ctx, request) => {
+export const updateAdComment = httpAction(async (ctx, request) => {
     const params = JSON.parse(await request.text())
 
     const values = {
         id: params.id,
         ad_id: params.ad_id,
         comment: params.comment,
-        created_by: params.created_by,
-        published: true,
-        updated_at: new Date().toISOString()
+        created_by: params.created_by
     }
 
-    const response = await ctx.runMutation(api.commentsMutations.updateComment, values);
+    const response = await ctx.runMutation(api.adCommentsMutations.updateAdComment, values);
 
     return new Response(JSON.stringify(response), {
         headers: {
@@ -57,7 +52,7 @@ export const updateComment = httpAction(async (ctx, request) => {
 export const getCommentsPerAd = httpAction(async (ctx, request) => {
     const params = JSON.parse(await request.text());
 
-    const response = await ctx.runQuery(api.commentsQueries.getCommentsPerAd, params);
+    const response = await ctx.runQuery(api.adCommentsQueries.getCommentsPerAd, params);
 
     return new Response(JSON.stringify(response), {
         headers: {

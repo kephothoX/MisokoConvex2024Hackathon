@@ -19,7 +19,8 @@ export class HeaderComponent implements OnInit {
   userProfile!: UserProfile;
   imageURL!: String;
 
-  accountEmail?: string | null | undefined = window.sessionStorage.getItem('email');
+  User?: string | null | undefined = window.sessionStorage.getItem('user');
+  Email: any;
 
   formData = new FormData();
 
@@ -33,6 +34,13 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     
+  }
+
+  updateUser(): void {
+    const user = JSON.parse(`${ window.sessionStorage.getItem('user')}`);
+    this.Email = user['email'];
+
+    this._router.navigate([`/authn/update/${ user['_id']}`]);
   }
 
 
